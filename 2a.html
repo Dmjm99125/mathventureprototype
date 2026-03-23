@@ -1,0 +1,199 @@
+<html>
+<body background="1kbk.jpg">
+
+<table>
+	<tr>
+		<td>
+		<a href="2.html"><img src="1sha.png" width="250" length="600"></a>
+
+		</td>
+	
+	</tr>
+</table>
+<br>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Drag the Shapes</title>
+<style>
+  body {
+    font-family: Arial;
+    text-align: center;
+    background: linear-gradient(to bottom, #ffecd2, #fcb69f);
+  }
+
+  h1 {
+    font-size: 40px;
+  }
+
+  .container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 30px;
+  }
+
+  .shape, .dropzone {
+    width: 100px;
+    height: 100px;
+    margin: 15px;
+  }
+
+  /* SHAPES */
+  .circle {
+    background-color: red;
+    border-radius: 50%;
+  }
+
+  .square {
+    background-color: blue;
+  }
+
+  .triangle {
+    width: 0;
+    height: 0;
+    border-left: 50px solid transparent;
+    border-right: 50px solid transparent;
+    border-bottom: 100px solid green;
+  }
+
+  /* OUTLINES */
+  .outline {
+    border: 3px dashed #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .circle-outline {
+    border-radius: 50%;
+  }
+
+  .square-outline {}
+
+  .triangle-outline {
+    width: 0;
+    height: 0;
+    border-left: 50px solid transparent;
+    border-right: 50px solid transparent;
+    border-bottom: 100px dashed #333;
+    background: none;
+  }
+
+  .score {
+    font-size: 22px;
+    margin-top: 20px;
+  }
+</style>
+</head>
+
+<body>
+
+<h1> Drag the Shapes</h1>
+<p>Match the shapes to their correct outline!</p>
+
+<div class="container" id="shapes"></div>
+<div class="container" id="targets"></div>
+
+<div class="score">Score: <span id="score">0</span></div>
+
+<!-- Sounds -->
+<audio id="correctSound" src="https://www.soundjay.com/buttons/sounds/button-4.mp3"></audio>
+<audio id="wrongSound" src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
+
+<script>
+const shapes = ["circle", "square", "triangle"];
+let score = 0;
+
+function shuffle(array) {
+  return array.sort(() => Math.random() - 0.5);
+}
+
+function startGame() {
+  const shapesContainer = document.getElementById("shapes");
+  const targetsContainer = document.getElementById("targets");
+
+  shapesContainer.innerHTML = "";
+  targetsContainer.innerHTML = "";
+
+  let shuffledShapes = shuffle([...shapes]);
+
+  // Create draggable shapes
+  shuffledShapes.forEach(shape => {
+    let div = document.createElement("div");
+    div.classList.add("shape");
+
+    if (shape !== "triangle") {
+      div.classList.add(shape);
+    } else {
+      div.classList.add("triangle");
+    }
+
+    div.setAttribute("draggable", true);
+
+    div.addEventListener("dragstart", (e) => {
+      e.dataTransfer.setData("text", shape);
+    });
+
+    shapesContainer.appendChild(div);
+  });
+
+  // Create drop targets
+  shapes.forEach(shape => {
+    let target = document.createElement("div");
+
+    if (shape === "triangle") {
+      target.classList.add("triangle-outline");
+    } else {
+      target.classList.add("dropzone", "outline", shape + "-outline");
+    }
+
+    target.addEventListener("dragover", (e) => e.preventDefault());
+
+    target.addEventListener("drop", (e) => {
+      e.preventDefault();
+      const draggedShape = e.dataTransfer.getData("text");
+
+      if (draggedShape === shape) {
+        target.style.backgroundColor = "lightgreen";
+        document.getElementById("correctSound").play();
+        score++;
+        document.getElementById("score").innerText = score;
+      } else {
+        document.getElementById("wrongSound").play();
+        alert("Oops! Try again 😊");
+      }
+    });
+
+    targetsContainer.appendChild(target);
+  });
+}
+
+// Start game
+startGame();
+</script>
+
+<br>
+<br>
+
+<hr width=100% size="5">
+<br>
+
+<center>
+<table>
+<tr>
+	<td>
+	 <center><a href="2b.html"><img src="np.png" width="150" length="200"></a></center>
+	</td>
+
+	<td>
+	 <center><a href="index.html"><img src="home.png" width="50" length="50"></a></center>
+	</td>
+</tr>
+</table>
+</center>
+
+
+</body>
+</html>

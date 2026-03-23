@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html>
+<body background="1kbk.jpg">
+
+<table align="left">
+	<tr>
+		<td>
+		<a href="2.html"><img src="1sha.png" width="250" length="600"></a>
+
+		</td>
+	
+	</tr>
+</table>
+<br>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍭 Shape Monster Cafe · kinderGAME</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #3b2b22;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Comic Neue', 'Chalkboard SE', 'Segoe UI', cursive, sans-serif;
+            padding: 16px;
+            margin: 0;
+        }
+
+        .game-card {
+            max-width: 1000px;
+            width: 100%;
+            background: #fdeacb;
+            border-radius: 90px 90px 50px 50px;
+            border: 10px solid #cf9f6e;
+            box-shadow: 0 20px 0 #9b6e46, 0 30px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+            padding: 25px 25px 35px;
+        }
+
+        /* monster header */
+        .monster-cafe {
+            background: #ffe2b0;
+            border-radius: 60px 60px 30px 30px;
+            padding: 20px 25px 25px;
+            border: 5px solid #ca8953;
+            box-shadow: inset 0 -6px 0 #b07341;
+        }
+
+        .title-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: #ffd897;
+            border-radius: 50px;
+            padding: 8px 30px;
+            width: fit-content;
+            margin: 0 auto 15px;
+            border: 4px solid #cb8b4a;
+        }
+
+        .title-row span {
+            font-size: 2.5rem;
+            line-height: 1.2;
+        }
+
+        .title-row h2 {
+            font-size: 2.2rem;
+            color: #4b2e15;
+            letter-spacing: 2px;
+        }
+
+        .monster-face {
+            background: #b5d989;
+            border-radius: 90px;
+            padding: 20px 30px 20px 30px;
+            border: 8px solid #6d8c4a;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+            box-shadow: 0 10px 0 #517b3c, inset 0 -3px 0 #dbf0b0;
+        }
+
+        .monster-avatar {
+            background: #7aa84a;
+            border-radius: 60px;
+            padding: 5px 20px 5px 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 5px solid #fcf2c9;
+        }
+
+        .eyes-nose {
+            font-size: 3.5rem;
+            filter: drop-shadow(2px 6px 0 #416b2f);
+        }
+
+        .monster-speech {
+            background: white;
+            border-radius: 60px 60px 60px 10px;
+            padding: 15px 30px;
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #3b2b1d;
+            border: 5px solid #fbbc5e;
+            box-shadow: 0 7px 0 #d6892b;
+            max-width: 400px;
+        }
+
+        .hungry-sign {
+            background: #ffb156;
+            border-radius: 30px;
+            padding: 10px 25px;
+            font-size: 1.8rem;
+            border: 4px solid #ad641e;
+            color: #2c1b0d;
+            font-weight: bold;
+        }
+
+        /* plate area : the shape to feed */
+        .order-zone {
+            background: #ecdbb9;
+            border-radius: 80px;
+            padding: 20px 25px;
+            margin: 25px 0 25px;
+            border: 6px solid #b18d61;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            flex-wrap: wrap;
+            gap: 20px;
+            box-shadow: inset 0 -5px 0 #9e7b53;
+        }
+
+        .order-badge {
+            background: #fceda6;
+            border-radius: 40px;
+            padding: 15px 30px;
+            font-size: 2rem;
+            border: 5px solid #eaac6f;
+            color: #482b12;
+        }
+
+        .shape-on-plate {
+            width: 130px;
+            height: 130px;
+            background: #ffeeaf;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 8px solid #f7b05e;
+            box-shadow: 0 10px 0 #b27332;
+        }
+
+        .shape-on-plate svg {
+            width: 100px;
+            height: 100px;
+            filter: drop-shadow(2px 6px 2px rgba(0,0,0,0.15));
+        }
+
+        /* food menu (shapes to pick) */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin: 30px 0 25px;
+        }
+
+        .menu-item {
+            background: #fee1b5;
+            border: 6px solid #f09d4c;
+            border-radius: 50px;
+            padding: 15px 0 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.05s linear;
+            box-shadow: 0 12px 0 #bc742f, 0 8px 15px rgba(110, 60, 10, 0.4);
+            will-change: transform;
+        }
+
+        .menu-item:active {
+            transform: translateY(8px);
+            box-shadow: 0 4px 0 #bc742f, 0 8px 15px rgba(110, 60, 10, 0.4);
+        }
+
+        .menu-item svg {
+            width: 75px;
+            height: 75px;
+        }
+
+        .menu-label {
+            font-size: 2rem;
+            background: #ffedc5;
+            padding: 4px 25px;
+            border-radius: 40px;
+            border: 3px solid #dc8e41;
+            color: #4f2e13;
+            font-weight: bold;
+        }
+
+        .menu-item.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+            filter: grayscale(0.4);
+            box-shadow: 0 5px 0 #94602f;
+            transform: translateY(7px);
+        }
+
+        /* feedback area */
+        .monster-feedback {
+            background: #eace9b;
+            border-radius: 50px;
+            padding: 20px 30px;
+            border: 6px solid #c18d50;
+            text-align: center;
+            min-height: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #2b3f1c;
+            margin: 15px 0 25px;
+            box-shadow: inset 0 4px 0 #ffeac2;
+        }
+
+        .feedback-emojis {
+            font-size: 2.8rem;
+            background: #fef5cf;
+            padding: 6px 25px;
+            border-radius: 50px;
+            border: 3px solid #e5a159;
+        }
+
+        .next-snack-btn {
+            background: #a9d4b0;
+            border: 7px solid #5f9652;
+            font-size: 2.3rem;
+            font-family: inherit;
+            font-weight: bold;
+            padding: 18px 40px;
+            border-radius: 80px;
+            color: #25512e;
+            box-shadow: 0 10px 0 #3f7841, 0 6px 15px #1b4f1b;
+            cursor: pointer;
+            transition: 0.07s;
+            width: fit-content;
+            margin: 5px auto 0;
+        }
+
+        .next-snack-btn:active {
+            transform: translateY(8px);
+            box-shadow: 0 2px 0 #3f7841, 0 8px 15px #1b4f1b;
+        }
+
+        .next-snack-btn:disabled {
+            opacity: 0.4;
+            pointer-events: none;
+            transform: translateY(5px);
+        }
+
+        .score-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+            background: #ffca93;
+            border-radius: 40px;
+            padding: 8px 25px;
+            border: 5px solid #b0692a;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #3f250c;
+        }
+
+        .reset-cafe {
+            background: #f5bd7a;
+            border-radius: 50px;
+            padding: 8px 25px;
+            border: 4px solid #9f5922;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+
+        .reset-cafe:active {
+            background: #e7a453;
+        }
+
+        /* svg fills */
+        .shape-fill-pink { fill: #f7a6b4; }
+        .shape-fill-mint { fill: #a2d9ce; }
+        .shape-fill-lavender { fill: #c9b2e6; }
+        .shape-fill-peach { fill: #faca9b; }
+        .shape-fill-aqua { fill: #93d7e7; }
+        .shape-fill-coral { fill: #fdaf8d; }
+        .shape-stroke-dark { stroke: #3f280f; stroke-width: 5; }
+    </style>
+</head>
+<body>
+<div class="game-card">
+    <div class="monster-cafe">
+        <div class="title-row">
+            <span>🍽️👾</span><h2>MONSTER CAFE</h2><span>👾🍽️</span>
+        </div>
+        <!-- monster greeting -->
+        <div class="monster-face">
+            <div class="monster-avatar">
+                <span class="eyes-nose">👀👃👀</span>
+                <span style="font-size:3rem;"></span>
+            </div>
+            <div class="monster-speech" id="monsterTalk">
+                feed me a shape!
+            </div>
+            <div class="hungry-sign">HUNGRY! 😋</div>
+        </div>
+    </div>
+
+    <!-- order (the shape to find) -->
+    <div class="order-zone">
+        <span class="order-badge">🍽️ TODAY'S SNACK</span>
+        <div class="shape-on-plate" id="orderShapeDisplay">
+            <!-- shape svg injected -->
+        </div>
+    </div>
+
+    <!-- menu : shape buttons -->
+    <div class="menu-grid" id="menuContainer"></div>
+
+    <!-- monster feedback after eating -->
+    <div class="monster-feedback" id="feedbackArea">
+        <span class="feedback-emojis" id="feedbackEmoji">🍕🍭</span>
+        <span id="feedbackText">pick a yummy shape</span>
+    </div>
+
+    <!-- next course / new shape -->
+    <button class="next-snack-btn" id="nextSnackBtn" disabled>🍬 next snack 🍬</button>
+
+    <!-- score + reset -->
+    <div class="score-panel">
+        <span>🍰 SNACKS: <span id="scoreDisplay">0</span></span>
+        <span class="reset-cafe" id="resetCafeBtn">🧹 new order</span>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ----- shape menu for monster cafe (6 cute shapes) -----
+        const menuShapes = [
+            { name: 'circle',  label: '⭕ circle',   emoji: '🍪' },
+            { name: 'square',  label: '⬜ square',   emoji: '🧀' },
+            { name: 'triangle',label: '🔺 triangle', emoji: '🍕' },
+            { name: 'rectangle',label: '📏 rectangle',emoji: '🍫' },
+            { name: 'heart',   label: '❤️ heart',    emoji: '🍓' },
+            { name: 'star',    label: '⭐ star',     emoji: '🍎' }
+        ];
+
+        // color classes for variety (each shape gets a friendly color)
+        const colorClasses = [
+            'shape-fill-pink',
+            'shape-fill-mint',
+            'shape-fill-lavender',
+            'shape-fill-peach',
+            'shape-fill-aqua',
+            'shape-fill-coral'
+        ];
+
+        // SVG generators (all use shape-stroke-dark for outline)
+        function getSvg(shapeName, colorClass) {
+            const strokeClass = 'shape-stroke-dark';
+            switch(shapeName) {
+                case 'circle':
+                    return `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" class="${colorClass} ${strokeClass}" /></svg>`;
+                case 'square':
+                    return `<svg viewBox="0 0 100 100"><rect x="20" y="20" width="60" height="60" rx="8" class="${colorClass} ${strokeClass}" /></svg>`;
+                case 'triangle':
+                    return `<svg viewBox="0 0 100 100"><polygon points="50,13 92,82 8,82" class="${colorClass} ${strokeClass}" /></svg>`;
+                case 'rectangle':
+                    return `<svg viewBox="0 0 100 100"><rect x="15" y="25" width="70" height="45" rx="8" class="${colorClass} ${strokeClass}" /></svg>`;
+                case 'heart':
+                    return `<svg viewBox="0 0 100 100"><path d="M50,30 Q40,10 20,20 Q5,35 25,55 Q40,70 50,80 Q60,70 75,55 Q95,35 80,20 Q60,10 50,30 Z" class="${colorClass} ${strokeClass}" /></svg>`;
+                case 'star':
+                    return `<svg viewBox="0 0 100 100"><polygon points="50,7 64,37 97,40 71,58 81,92 50,73 19,92 29,58 3,40 36,37" class="${colorClass} ${strokeClass}" /></svg>`;
+                default: return '';
+            }
+        }
+
+        // Game state
+        let currentOrderIndex = 0;          // index of shape the monster wants
+        let menuItems = [];                 // array of { name, label, colorClass, emoji }
+        let score = 0;
+        let roundFinished = false;
+
+        // DOM elements
+        const orderDisplay = document.getElementById('orderShapeDisplay');
+        const menuContainer = document.getElementById('menuContainer');
+        const monsterTalk = document.getElementById('monsterTalk');
+        const feedbackEmoji = document.getElementById('feedbackEmoji');
+        const feedbackText = document.getElementById('feedbackText');
+        const nextBtn = document.getElementById('nextSnackBtn');
+        const scoreSpan = document.getElementById('scoreDisplay');
+        const resetBtn = document.getElementById('resetCafeBtn');
+
+        // Helper: shuffle (for random menu)
+        function shuffle(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // build menu with shuffled colors & shapes (always all 6 shapes appear)
+        function buildMenu() {
+            // start with base shapes, each gets a color from list (rotated, but then shuffle)
+            let colored = menuShapes.map((shape, idx) => ({
+                name: shape.name,
+                label: shape.label,
+                emoji: shape.emoji,
+                colorClass: colorClasses[idx % colorClasses.length]
+            }));
+            // shuffle to randomize order and color placement
+            return shuffle(colored);
+        }
+
+        // render order (the shape monster wants)
+        function renderOrder() {
+            const shape = menuShapes[currentOrderIndex];
+            // order shape is always gold/yellow (special for order) -> use peach color for distinction
+            const svg = getSvg(shape.name, 'shape-fill-peach');  // warm golden
+            orderDisplay.innerHTML = svg;
+            // monster hint
+            monsterTalk.innerText = `Yummy... i want a ${shape.label}`;
+        }
+
+        // render menu (all 6 shape options)
+        function renderMenu() {
+            let html = '';
+            menuItems.forEach((item, idx) => {
+                const svg = getSvg(item.name, item.colorClass);
+                html += `
+                    <div class="menu-item" data-shape="${item.name}" data-index="${idx}">
+                        ${svg}
+                        <span class="menu-label">${item.emoji} ${item.label}</span>
+                    </div>
+                `;
+            });
+            menuContainer.innerHTML = html;
+
+            if (!roundFinished) {
+                // attach event listeners to active menu
+                document.querySelectorAll('.menu-item').forEach(el => {
+                    el.addEventListener('click', menuClickHandler);
+                });
+            } else {
+                // disable all
+                document.querySelectorAll('.menu-item').forEach(el => {
+                    el.classList.add('disabled');
+                });
+            }
+        }
+
+        // menu click handler
+        function menuClickHandler(e) {
+            const menuItem = e.currentTarget;
+            if (roundFinished) return;
+
+            const chosenShape = menuItem.dataset.shape;
+            const correctShape = menuShapes[currentOrderIndex].name;
+
+            // Disable menu & mark round finished
+            roundFinished = true;
+            document.querySelectorAll('.menu-item').forEach(el => {
+                el.removeEventListener('click', menuClickHandler);
+                el.classList.add('disabled');
+            });
+
+            const isCorrect = (chosenShape === correctShape);
+            if (isCorrect) {
+                score += 1;
+                feedbackEmoji.innerText = '😋👏🍦';
+                feedbackText.innerText = 'MUNCH MUNCH! delicious!';
+                monsterTalk.innerText = '😍 YUM YUM! thank you!';
+            } else {
+                feedbackEmoji.innerText = '😕🍙🤔';
+                feedbackText.innerText = `Monster wanted a ${menuShapes[currentOrderIndex].label}`;
+                monsterTalk.innerText = `😐 i wanted ${menuShapes[currentOrderIndex].label} ... `;
+            }
+
+            // update score display
+            scoreSpan.innerText = score;
+
+            // enable next button
+            nextBtn.disabled = false;
+        }
+
+        // load new round (keep score)
+        function nextRound() {
+            if (!roundFinished) return; // just safety
+
+            // change order shape (avoid same as previous if possible)
+            let newIdx = Math.floor(Math.random() * menuShapes.length);
+            while (menuShapes.length > 1 && newIdx === currentOrderIndex) {
+                newIdx = Math.floor(Math.random() * menuShapes.length);
+            }
+            currentOrderIndex = newIdx;
+
+            // rebuild menu (colors shuffled)
+            menuItems = buildMenu();
+
+            // reset flags
+            roundFinished = false;
+            nextBtn.disabled = true;
+
+            // reset feedback / monster text
+            feedbackEmoji.innerText = '🍕🍭';
+            feedbackText.innerText = 'pick a yummy shape';
+            monsterTalk.innerText = `feed me a shape!`;
+
+            // render updated order + menu
+            renderOrder();
+            renderMenu();
+        }
+
+        // reset whole game (score 0)
+        function resetGame() {
+            score = 0;
+            scoreSpan.innerText = '0';
+            currentOrderIndex = Math.floor(Math.random() * menuShapes.length);
+            menuItems = buildMenu();
+            roundFinished = false;
+            nextBtn.disabled = true;
+
+            // fresh messages
+            feedbackEmoji.innerText = '🍕🍭';
+            feedbackText.innerText = 'pick a yummy shape';
+            monsterTalk.innerText = 'feed me a shape!';
+
+            renderOrder();
+            renderMenu();
+        }
+
+        // attach listeners
+        nextBtn.addEventListener('click', nextRound);
+        resetBtn.addEventListener('click', resetGame);
+
+        // start game
+        resetGame();  // sets random order & menu
+
+    })();
+</script>
+
+<br>
+
+
+<table alighn="right">
+<tr>
+	<td>
+	 <center><a href="2c1.html"><img src="np.png" width="150" length="200"></a></center>
+	</td>
+
+	<td>
+	 <center><a href="index.html"><img src="home.png" width="50" length="50"></a></center>
+	</td>
+</tr>
+</table>
+
+
+
+</body>
+</html>
