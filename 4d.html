@@ -53,7 +53,7 @@ body {
 <!-- MENU -->
 <div id="menu" class="screen active">
     <h1>➕ Addition Adventure</h1>
-    <p>Choose your character:</p>
+    <p>Piliin kung sino ang nais mong gamitin:</p>
 
     <div>
         <span class="character" onclick="selectCharacter('🐻', this)">🐻</span>
@@ -89,10 +89,7 @@ let correctAnswer = 0;
 
 const fruits = ["🍎","🍌","🍇","🍓","🍍"];
 
-function speak(text){
-    let msg = new SpeechSynthesisUtterance(text);
-    speechSynthesis.speak(msg);
-}
+// Removed the speak() function
 
 function selectCharacter(char, element){
     character = char;
@@ -134,10 +131,9 @@ function generateGame(){
 
     let fruit = randomFruit();
 
-    let story = `${character} found ${num1} ${fruit} and got ${num2} more. How many in all?`;
+    let story = `${character} ay mayroong ${num1} ${fruit} at nakakita ng ${num2} pa. Ilang prutas lahat ang nakita niya?`;
 
     document.getElementById("story").innerText = story;
-    speak(story);
 
     document.getElementById("visual").innerText =
         fruit.repeat(num1) + " ➕ " + fruit.repeat(num2);
@@ -172,14 +168,14 @@ function generateAnswers(){
 function checkAnswer(selected){
     if(selected === correctAnswer){
         score++;
-        speak("Great job!");
+        // Removed speak("Great job!");
     } else {
-        speak("Try again!");
+        // Removed speak("Try again!");
     }
 
     if(score > 0 && score % 5 === 0){
         level++;
-        speak("Level up!");
+        // Removed speak("Level up!");
     }
 
     document.getElementById("score").innerText = score;

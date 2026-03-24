@@ -14,16 +14,19 @@
 	</table>
 
 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🐌 Alphabet Express · letter sequencing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Alphabet Express</title>
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
+            padding: 0;
             user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -32,502 +35,268 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe UI', cursive, sans-serif;
-            padding: 15px;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
+            padding: 10px;
         }
 
         .game-box {
-            max-width: 1000px;
+            max-width: 800px;
             width: 100%;
             background: #fcf3cf;
-            border-radius: 90px 90px 60px 60px;
+            border-radius: 40px;
             border: 8px solid #f7b773;
-            box-shadow: 0 18px 0 #cc9146, 0 25px 25px rgba(0,0,0,0.25);
-            padding: 20px 25px 30px;
+            box-shadow: 0 12px 0 #cc9146;
+            padding: 20px;
         }
 
+        /* Top Bar */
         .train-header {
             background: #fedd9e;
-            border-radius: 50px;
-            padding: 15px 30px;
+            border-radius: 25px;
+            padding: 10px 20px;
             margin-bottom: 15px;
-            border: 6px solid #ce964b;
+            border: 5px solid #ce964b;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
-            box-shadow: 0 8px 0 #b07534;
-        }
-
-        .title-zone {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: #fff4bb;
-            border-radius: 60px;
-            padding: 5px 30px 5px 20px;
-            border: 4px solid #ebac5e;
-        }
-
-        .title-zone span {
-            font-size: 3rem;
-        }
-
-        .title-zone h2 {
-            font-size: 2.2rem;
-            color: #4d2d12;
         }
 
         .level-indicator {
             background: #bee0b9;
-            border-radius: 40px;
-            padding: 10px 30px;
-            font-size: 2rem;
-            border: 5px solid #57944e;
-            color: #1d4d1d;
+            border-radius: 15px;
+            padding: 5px 15px;
+            font-size: 1.2rem;
+            border: 3px solid #57944e;
             font-weight: bold;
         }
 
+        /* Message Area */
         .engine {
             background: #ffd58c;
-            border-radius: 60px;
-            padding: 15px 30px;
-            margin: 15px 0 20px;
-            border: 6px solid #c1863d;
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            flex-wrap: wrap;
-            box-shadow: 0 7px 0 #9f692d;
+            border-radius: 20px;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 4px solid #c1863d;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
         }
 
-        .engine-emoji {
-            font-size: 4rem;
-            background: #e8b15c;
-            border-radius: 50%;
-            padding: 5px 18px;
-        }
-
-        .engine-message {
-            background: #feebc0;
-            border-radius: 50px;
-            padding: 15px 35px;
-            font-size: 2.2rem;
-            border: 5px solid #f3ac48;
-            box-shadow: inset 0 -3px 0 #fad194;
-        }
-
-        /* train track (slots) */
+        /* THE TRACK (Where cars appear) */
         .track {
             background: #b8d198;
-            border-radius: 90px;
-            padding: 30px 15px;
-            border: 6px solid #789b4b;
-            margin: 20px 0 25px;
-            box-shadow: inset 0 -5px 0 #50752e, 0 12px 0 #56803b;
+            border-radius: 30px;
+            padding: 20px 10px;
+            border: 5px solid #789b4b;
+            margin-bottom: 15px;
+            min-height: 120px; /* Prevents jumping */
         }
 
         .train-cars {
             display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
             justify-content: center;
-            gap: 15px 20px;
-            margin-bottom: 5px;
+            gap: 10px;
         }
 
         .car-slot {
             background: #ffc88a;
-            width: 110px;
-            height: 130px;
-            border-radius: 40px 40px 20px 20px;
-            border: 6px solid #ad6e35;
+            flex: 1;
+            max-width: 90px;
+            height: 110px;
+            border-radius: 20px 20px 10px 10px;
+            border: 4px solid #ad6e35;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 10px 0 #7b4f26;
-            position: relative;
-        }
-
-        .car-number {
-            font-size: 1.8rem;
-            background: #fee256;
-            width: 50px;
-            height: 50px;
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 3px solid #bb8833;
-            margin-bottom: 5px;
-            font-weight: bold;
+            box-shadow: 0 6px 0 #7b4f26;
         }
 
         .letter-place {
-            font-size: 4rem;
-            line-height: 1.2;
+            font-size: 2.5rem;
             font-weight: bold;
             color: #2c1809;
-            text-transform: uppercase;
         }
 
-        .empty-letter {
-            font-size: 2.8rem;
-            opacity: 0.5;
-        }
-
-        /* letter station (choice pool) */
+        /* THE STATION (Where choices appear) */
         .station {
             background: #cfdbea;
-            border-radius: 80px;
-            padding: 25px 25px;
-            border: 6px solid #6482a3;
-            box-shadow: inset 0 -5px 0 #395d7a, 0 12px 0 #355a7a;
-            margin: 20px 0;
-        }
-
-        .station-title {
-            font-size: 2rem;
-            background: #fdf0b2;
-            padding: 8px 30px;
-            border-radius: 40px;
-            width: fit-content;
-            margin: 0 auto 20px;
-            border: 4px solid #b5924a;
+            border-radius: 30px;
+            padding: 20px;
+            border: 5px solid #6482a3;
+            margin-bottom: 15px;
+            min-height: 100px;
         }
 
         .letters-grid {
             display: flex;
             flex-wrap: wrap;
-            align-items: center;
             justify-content: center;
-            gap: 16px;
+            gap: 12px;
         }
 
         .letter-card {
             background: #ffdbb5;
-            width: 100px;
-            height: 110px;
-            border-radius: 40px;
-            border: 6px solid #ea9549;
+            width: 70px;
+            height: 90px;
+            border-radius: 20px;
+            border: 4px solid #ea9549;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: 0.06s;
-            box-shadow: 0 12px 0 #b15f2a, 0 8px 15px #8b501f;
+            box-shadow: 0 8px 0 #b15f2a;
+            font-size: 2.8rem;
+            font-weight: bold;
+            transition: transform 0.1s;
         }
 
         .letter-card:active {
-            transform: translateY(8px);
-            box-shadow: 0 4px 0 #b15f2a, 0 8px 15px #8b501f;
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 #b15f2a;
         }
 
-        .letter-card.disabled-letter {
-            opacity: 0.35;
+        .disabled-letter {
+            opacity: 0.2;
             pointer-events: none;
-            transform: translateY(5px);
-            box-shadow: 0 5px 0 #8b501f;
-            filter: grayscale(0.5);
+            transform: translateY(4px);
+            box-shadow: none;
         }
 
-        .big-letter {
-            font-size: 4.5rem;
-            font-weight: bold;
-            color: #2b1d0d;
-            line-height: 1;
-            text-transform: uppercase;
-        }
-
-        .small-hint {
-            font-size: 1.4rem;
-            background: #fffecf;
-            padding: 3px 15px;
-            border-radius: 20px;
-            margin-top: 5px;
-        }
-
-        .feedback-zone {
-            background: #ead2aa;
-            border-radius: 60px;
-            padding: 18px 25px;
-            border: 6px solid #c7914c;
-            font-size: 2.3rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            min-height: 100px;
-            margin: 15px 0 20px;
-        }
-
+        /* Next Button */
         .next-choo-btn {
+            width: 100%;
             background: #fdd06b;
-            border: 8px solid #cc8b3c;
-            font-size: 2.4rem;
+            border: 6px solid #cc8b3c;
+            font-size: 1.5rem;
             font-weight: bold;
-            padding: 15px 45px;
-            border-radius: 60px;
-            color: #3a240d;
-            box-shadow: 0 12px 0 #9e632b, 0 6px 20px #6b411d;
+            padding: 15px;
+            border-radius: 25px;
             cursor: pointer;
-            transition: 0.07s;
-            width: fit-content;
-            margin: 10px auto 0;
-        }
-
-        .next-choo-btn:active {
-            transform: translateY(8px);
-            box-shadow: 0 4px 0 #9e632b, 0 6px 20px #6b411d;
+            box-shadow: 0 8px 0 #9e632b;
+            margin-bottom: 15px;
         }
 
         .next-choo-btn:disabled {
             opacity: 0.5;
-            pointer-events: none;
-            transform: translateY(5px);
+            box-shadow: none;
+            transform: translateY(4px);
         }
 
-        .footer-tracks {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-            background: #ffe5b4;
-            border-radius: 50px;
-            padding: 10px 25px;
-            border: 5px solid #b87a38;
-            font-size: 2rem;
-            font-weight: bold;
+        @media (min-width: 600px) {
+            .car-slot { height: 140px; max-width: 110px; }
+            .letter-place { font-size: 4rem; }
+            .letter-card { width: 100px; height: 120px; font-size: 4rem; }
         }
-
-        .reset-train {
-            background: #f3ba74;
-            padding: 8px 30px;
-            border-radius: 40px;
-            border: 4px solid #9e602b;
-            cursor: pointer;
-        }
-
-        .reset-train:active {
-            background: #e09f4c;
-        }
-
     </style>
 </head>
 <body>
+
 <div class="game-box">
     <div class="train-header">
-        <div class="title-zone">
-            <span>🚂🔤</span>
-            <h2>ALPHABET EXPRESS</h2>
-        </div>
-        <div class="level-indicator" id="levelDisplay">A · B · C · D</div>
+        <h2 style="font-size: 1.5rem;">❤️ KAYA MO YAN!</h2>
+        <div class="level-indicator" id="levelDisplay">....</div>
     </div>
 
-    <div class="engine">
-        <span class="engine-emoji">🚆</span>
-        <span class="engine-message" id="engineMessage">load the letters in order!</span>
-    </div>
+    <div class="engine" id="engineMessage">Loading...</div>
 
-    <!-- train cars (4 slots) -->
     <div class="track">
-        <div class="train-cars" id="trainCarsContainer">
-            <!-- injected via js -->
-        </div>
+        <div class="train-cars" id="trainCarsContainer"></div>
     </div>
 
-    <!-- letter station -->
     <div class="station">
-        <div class="station-title">📮 pick a letter</div>
         <div class="letters-grid" id="lettersGrid"></div>
     </div>
 
-    <!-- feedback area -->
-    <div class="feedback-zone" id="feedbackZone">
-        <span id="feedbackEmoji">🐌</span>
-        <span id="feedbackText">choo choo! which letter next?</span>
-    </div>
+    <div class="engine" style="background:#ead2aa;" id="feedbackText">Ready?</div>
 
-    <!-- next train (new letter set) -->
-    <button class="next-choo-btn" id="nextTrainBtn" disabled>🚂 next alphabet train</button>
-
-    <!-- footer reset -->
-    <div class="footer-tracks">
-        <span>🔡 letter cars</span>
-        <span class="reset-train" id="resetTrainBtn">🔄 start over</span>
+    <button class="next-choo-btn" id="nextTrainBtn" disabled>NEXT ➔</button>
+    
+    <div style="text-align: center;">
+        <span onclick="location.reload()" style="cursor:pointer; text-decoration: underline; color: #9e602b; font-weight: bold;">🔄 Reset Game</span>
     </div>
 </div>
 
 <script>
-    (function() {
-        // ---------- we use capital letters for clarity ----------
-        const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    // This ensures the game only starts once the HTML is fully ready
+    window.onload = function() {
+        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+        let currentSequence = [];
+        let userSequence = [];
+        let currentStepIndex = 0;
 
-        // game state: we choose a random block of 4 CONSECUTIVE letters (e.g., K, L, M, N)
-        let currentSequence = [];        // array of 4 letters (e.g., ['F','G','H','I'])
-        let userSequence = [];            // letters placed so far (in order)
-        let placedLetters = [];            // simple array of placed letters (to disable)
-        let currentStepIndex = 0;          // 0..3
-        let roundComplete = false;
-
-        // DOM elements
-        const trainCarsContainer = document.getElementById('trainCarsContainer');
+        const trainContainer = document.getElementById('trainCarsContainer');
         const lettersGrid = document.getElementById('lettersGrid');
-        const engineMessage = document.getElementById('engineMessage');
-        const feedbackEmoji = document.getElementById('feedbackEmoji');
-        const feedbackText = document.getElementById('feedbackText');
-        const levelDisplay = document.getElementById('levelDisplay');
-        const nextTrainBtn = document.getElementById('nextTrainBtn');
-        const resetTrainBtn = document.getElementById('resetTrainBtn');
+        const engineMsg = document.getElementById('engineMessage');
+        const feedback = document.getElementById('feedbackText');
+        const levelDisp = document.getElementById('levelDisplay');
+        const nextBtn = document.getElementById('nextTrainBtn');
 
-        // Helper: pick random start index (0 to 22) so that we have 4 letters
-        function getRandomStart() {
-            const maxStart = alphabet.length - 4;  // 26-4 = 22 (A..W)
-            return Math.floor(Math.random() * (maxStart + 1));
-        }
-
-        // initialise new round (new sequence)
-        function resetRound() {
-            const startIdx = getRandomStart();
+        function startNewRound() {
+            const startIdx = Math.floor(Math.random() * (alphabet.length - 4));
             currentSequence = alphabet.slice(startIdx, startIdx + 4);
             userSequence = [];
-            placedLetters = [];
             currentStepIndex = 0;
-            roundComplete = false;
-            nextTrainBtn.disabled = true;
-
-            // update level display
-            levelDisplay.innerText = currentSequence.join(' · ');
-
-            // friendly engine message
-            engineMessage.innerText = `load the letters in order!`;
-
-            // render
-            renderTrainSlots();
-            renderLetterCards();
-            updateFeedback('choo choo! which letter next?', '🐌');
+            
+            nextBtn.disabled = true;
+            levelDisp.innerText = currentSequence.join(" ");
+            engineMsg.innerText = "Pagsunod-sunurin ang mga letra!";
+            feedback.innerText = "Pumili ng mga letra.";
+            
+            render();
         }
 
-        // render 4 train cars
-        function renderTrainSlots() {
-            let html = '';
-            for (let i = 0; i < 4; i++) {
-                const isFilled = i < userSequence.length;
-                const letter = isFilled ? userSequence[i] : '';
-                html += `
+        function render() {
+            // Render Slots
+            trainContainer.innerHTML = "";
+            for(let i=0; i<4; i++) {
+                const char = userSequence[i] || "";
+                trainContainer.innerHTML += `
                     <div class="car-slot">
-                        <div class="car-number">${i+1}</div>
-                        <div class="letter-place">
-                            ${isFilled ? letter : '<span class="empty-letter">⬜</span>'}
-                        </div>
-                    </div>
-                `;
+                        <div style="font-size: 0.8rem; margin-bottom: 5px;">😊 ${i+1}</div>
+                        <div class="letter-place">${char}</div>
+                    </div>`;
             }
-            trainCarsContainer.innerHTML = html;
-        }
 
-        // render all alphabet letters (A..Z) but disable those already placed + also those not in currentSequence? we want to limit choices to only the 4 needed letters.
-        // For kinder, it's nicer to only show the 4 letters they need (less overwhelming). but we also want them to recognize the letters.
-        // We'll show the 4 target letters, but we disable after use.
-        // Also we can show them in random order.
-        function renderLetterCards() {
-            // create a shuffled copy of the currentSequence to make it more playful
-            const shuffled = [...currentSequence].sort(() => Math.random() - 0.5);
-            let cardsHtml = '';
-
-            for (let letter of shuffled) {
-                const isUsed = placedLetters.includes(letter);
-                const disabledClass = isUsed ? 'disabled-letter' : '';
-                cardsHtml += `
-                    <div class="letter-card ${disabledClass}" data-letter="${letter}">
-                        <span class="big-letter">${letter}</span>
-                        <span class="small-hint">letter</span>
-                    </div>
-                `;
-            }
-            lettersGrid.innerHTML = cardsHtml;
-
-            if (!roundComplete) {
-                // attach click listeners to active cards
-                document.querySelectorAll('.letter-card:not(.disabled-letter)').forEach(card => {
-                    card.addEventListener('click', cardClickHandler);
+            // Render Choices (Shuffled)
+            // We only shuffle once at the start of the round
+            if (userSequence.length === 0) {
+                const shuffled = [...currentSequence].sort(() => Math.random() - 0.5);
+                lettersGrid.innerHTML = "";
+                shuffled.forEach(letter => {
+                    const btn = document.createElement('div');
+                    btn.className = 'letter-card';
+                    btn.innerText = letter;
+                    btn.onclick = () => handlePick(letter, btn);
+                    lettersGrid.appendChild(btn);
                 });
             }
         }
 
-        // card click handler
-        function cardClickHandler(e) {
-            const card = e.currentTarget;
-            if (roundComplete) return;
+        function handlePick(letter, element) {
+            const expected = currentSequence[currentStepIndex];
 
-            const letter = card.dataset.letter;   // string like 'F'
-
-            // what is the expected next letter?
-            const expectedLetter = currentSequence[currentStepIndex];
-
-            if (letter === expectedLetter) {
-                // correct placement!
+            if (letter === expected) {
                 userSequence.push(letter);
-                placedLetters.push(letter);
                 currentStepIndex++;
-
-                // update train display
-                renderTrainSlots();
-
-                // check if round finished
+                element.classList.add('disabled-letter');
+                feedback.innerText = "Good job! ✅";
+                
                 if (currentStepIndex === 4) {
-                    roundComplete = true;
-                    nextTrainBtn.disabled = false;
-                    updateFeedback('★ ALL ABOARD! ★ you did it!', '🏆🚂');
-                    engineMessage.innerText = 'perfect alphabet train!';
-                    // disable all cards
-                    document.querySelectorAll('.letter-card').forEach(c => {
-                        c.classList.add('disabled-letter');
-                    });
-                } else {
-                    // correct but not finished
-                    updateFeedback('good! next letter, please!', '✅🔤');
-                    // re-render cards (newly used one disabled)
-                    renderLetterCards();
+                    feedback.innerText = "Mahusay! 🏆";
+                    engineMsg.innerText = "Magaling! Binabati kita";
+                    nextBtn.disabled = false;
                 }
+                render(); 
             } else {
-                // wrong letter: hint
-                updateFeedback(`hmm, we need letter ${expectedLetter}`, '🤔');
-                // maybe wiggle? but message enough
+                feedback.innerText = "Hindi yan! Subukan mo ang " + expected + " 🤔";
             }
         }
 
-        // update feedback zone
-        function updateFeedback(text, emoji = '🐌') {
-            feedbackText.innerText = text;
-            feedbackEmoji.innerText = emoji;
-        }
-
-        // start a new sequence (next train)
-        function newTrainSequence() {
-            if (!roundComplete) return; // only if round done
-            resetRound();
-        }
-
-        // start over (reset)
-        function startOver() {
-            resetRound();
-        }
-
-        // event listeners
-        nextTrainBtn.addEventListener('click', newTrainSequence);
-        resetTrainBtn.addEventListener('click', startOver);
-
-        // initial game
-        resetRound();
-
-    })();
-</script>
- 
+        nextBtn.onclick = startNewRound;
+        startNewRound();
+    };
+</script> 
 
 <center>
 <table>

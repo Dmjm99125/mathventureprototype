@@ -1,563 +1,147 @@
 <!DOCTYPE html>
-
-<html>
-<body background="1kbk.jpg">
-
-<table align="left">
-	<tr>
-		<td>
-		<a href="2.html"><img src="1sha.png" width="250" length="600"></a>
-
-		</td>
-	
-	</tr>
-</table>
-<br>
-
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌈🎨 kinderGarden SHAPES · play & learn</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            user-select: none; /* prevent selecting text/dragging like a big kid */
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shape Game</title>
 
-        body {
-            margin: 0;
-            min-height: 100vh;
-            background: linear-gradient(145deg, #f9e9d2 0%, #fce2b4 100%);
-            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe UI', cursive, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-        }
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #fce2b4;
+    text-align: center;
+}
 
-        .game-box {
-            max-width: 900px;
-            width: 100%;
-            background: #fef8e7;
-            border-radius: 70px 70px 40px 40px;
-            box-shadow: 0 20px 30px rgba(0,0,0,0.1), inset 0 2px 8px #fff9e6;
-            padding: 25px 20px 35px 20px;
-            border: 6px solid #ffcf96;
-        }
+/* GAME */
+.game-box {
+    max-width: 900px;
+    margin: 40px auto;
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+}
 
-        h1 {
-            text-align: center;
-            margin: 0 0 8px 0;
-            font-size: 2.8rem;
-            letter-spacing: 2px;
-            color: #5b3c1c;
-            text-shadow: 4px 4px 0 #ffb882;
-            word-break: break-word;
-        }
+.choices-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
 
-        .subhead {
-            text-align: center;
-            font-size: 1.5rem;
-            color: #a55d2e;
-            background: #ffddb0;
-            display: inline-block;
-            padding: 0.3rem 2rem;
-            margin: 0 auto 20px auto;
-            border-radius: 60px;
-            box-shadow: 0 5px 0 #b27a4a;
-            font-weight: bold;
-            border: 2px solid #ffe3c1;
-        }
+.shape-btn {
+    padding: 15px;
+    background: #ffe0a3;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 25px;
+}
 
-        .play-area {
-            background: #e6d5b8;
-            border-radius: 70px;
-            padding: 30px 20px 20px 20px;
-            border: 6px solid #caa87d;
-            box-shadow: inset 0 -5px 0 #ad8b62;
-        }
+.shape-btn:active {
+    transform: scale(0.95);
+}
 
-        /* big question + shape image */
-        .question-zone {
-            background: #b3d9d2;
-            border-radius: 50px;
-            padding: 15px 20px;
-            margin-bottom: 30px;
-            border: 5px solid #63a195;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            box-shadow: 0 8px 0 #488077;
-        }
+.message {
+    margin-top: 15px;
+    font-size: 20px;
+}
 
-        .ask-text {
-            font-size: 2.2rem;
-            background: #fef6ae;
-            padding: 10px 25px;
-            border-radius: 40px;
-            color: #2f5e55;
-            font-weight: bold;
-            border: 3px solid #f5cd7a;
-            box-shadow: 0 5px 0 #b3955a;
-        }
+button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: none;
+    background: #86cb92;
+    cursor: pointer;
+}
 
-        .question-shape {
-            width: 100px;
-            height: 100px;
-            background: #f6d5b3;
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            filter: drop-shadow(0 10px 0 #b07e54);
-        }
-
-        .question-shape svg {
-            width: 80px;
-            height: 80px;
-            display: block;
-        }
-
-        /* choices grid — big friendly buttons */
-        .choices-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin: 25px 0 20px;
-            justify-items: center;
-        }
-
-        .shape-btn {
-            background: #fee6b0;
-            border: 6px solid #f8bd7e;
-            border-radius: 40px;
-            padding: 20px 0;
-            width: 100%;
-            max-width: 200px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            transition: all 0.07s ease;
-            box-shadow: 0 10px 0 #c98f5e, 0 5px 15px rgba(0,0,0,0.2);
-            will-change: transform;
-        }
-
-        .shape-btn:active {
-            transform: translateY(6px);
-            box-shadow: 0 4px 0 #c98f5e, 0 5px 12px rgba(0,0,0,0.2);
-        }
-
-        /* disabled state (after pick) – keep clickable look but less bright */
-        .shape-btn.disabled-btn {
-            opacity: 0.6;
-            pointer-events: none;
-            filter: grayscale(0.3);
-            box-shadow: 0 5px 0 #a57349;
-            transform: translateY(5px);
-        }
-
-        .shape-btn svg {
-            width: 70px;
-            height: 70px;
-            filter: drop-shadow(2px 4px 3px rgba(0,0,0,0.2));
-        }
-
-        .shape-label {
-            font-size: 1.8rem;
-            background: #fff5d0;
-            padding: 5px 20px;
-            border-radius: 30px;
-            border: 3px solid #ffac6b;
-            color: #613c1e;
-            font-weight: bold;
-            box-shadow: inset 0 2px 5px #ffe184;
-        }
-
-        /* feedback & message */
-        .message-area {
-            background: #ffedb5;
-            border-radius: 40px;
-            padding: 12px 18px;
-            border: 5px solid #f5b37c;
-            text-align: center;
-            margin: 15px 0 20px;
-            font-size: 2rem;
-            font-weight: bold;
-            color: #2f3e2c;
-            min-height: 95px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-            box-shadow: inset 0 2px 10px #ffeac5;
-        }
-
-        .happy-emojis {
-            font-size: 2.4rem;
-            line-height: 1;
-        }
-
-        .next-btn {
-            background: #86cb92;
-            border: none;
-            font-family: inherit;
-            font-size: 2.2rem;
-            font-weight: bold;
-            padding: 18px 40px;
-            border-radius: 50px;
-            border: 5px solid #4a7b55;
-            color: #1e4b2b;
-            cursor: pointer;
-            box-shadow: 0 9px 0 #367a3e, 0 5px 15px darkgreen;
-            transition: all 0.07s;
-            margin-top: 10px;
-            width: fit-content;
-            margin-left: auto;
-            margin-right: auto;
-            letter-spacing: 2px;
-        }
-
-        .next-btn:active {
-            transform: translateY(6px);
-            box-shadow: 0 3px 0 #367a3e, 0 5px 12px darkgreen;
-        }
-
-        .next-btn:disabled {
-            opacity: 0.4;
-            pointer-events: none;
-            transform: translateY(4px);
-            box-shadow: 0 5px 0 #2f6236;
-        }
-
-        .footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 15px;
-            color: #804e27;
-            font-size: 1.6rem;
-            font-weight: bold;
-            padding: 0 10px;
-        }
-
-        .score-badge {
-            background: #ffe682;
-            border-radius: 30px;
-            padding: 10px 25px;
-            border: 3px solid #d29f56;
-            box-shadow: inset 0 2px 10px #fce39c;
-        }
-
-        /* colorful SVG fills */
-        .shape-fill-blue { fill: #5784d8; }
-        .shape-fill-red { fill: #e35b5b; }
-        .shape-fill-green { fill: #78b86b; }
-        .shape-fill-yellow { fill: #f7cf6b; }
-        .shape-fill-purple { fill: #b484d4; }
-        .shape-fill-orange { fill: #f9a35c; }
-        .shape-stroke { stroke: #2f3e2c; stroke-width: 4; }
-
-        /* responsive */
-        @media (max-width: 550px) {
-            h1 { font-size: 2.2rem; }
-            .choices-grid { gap: 10px; }
-            .shape-btn svg { width: 50px; height: 50px; }
-            .shape-label { font-size: 1.3rem; }
-            .ask-text { font-size: 1.7rem; }
-        }
-    </style>
+/* MOBILE */
+@media (max-width:600px) {
+    .choices-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+</style>
 </head>
+
 <body>
+
 <div class="game-box">
-    <h1>⭐ SHAPE GARDEN ⭐</h1>
-    <div style="text-align: center"><span class="subhead">let's find the matching shape!</span></div>
 
-    <div class="play-area">
-        <!-- big question area : shape + text -->
-        <div class="question-zone">
-            <span class="ask-text">find this one ✨</span>
-            <div class="question-shape" id="questionShapeDisplay">
-                <!-- dynamic shape svg inserted via js -->
-            </div>
-        </div>
+<h2>Find the Shape</h2>
 
-        <!-- choice buttons grid (3x2 for six shapes) -->
-        <div class="choices-grid" id="choicesContainer"></div>
+<div id="question" style="font-size:60px;">⬛</div>
 
-        <!-- message after answer -->
-        <div class="message-area" id="messageBox">
-            <span class="happy-emojis">🧸🌟</span>
-            <span id="messageText">tap a shape!</span>
-        </div>
+<div class="choices-grid" id="choices"></div>
 
-        <!-- next challenge button -->
-        <button class="next-btn" id="nextBtn" disabled>👉 next shape 👈</button>
+<div class="message" id="message">Tap the correct shape!</div>
 
-        <!-- score and friendly reset -->
-        <div class="footer">
-            <span class="score-badge" id="scoreDisplay">⭐ 0</span>
-            <span style="cursor:pointer; background:#eccd9c; padding:8px 20px; border-radius:30px; border:3px solid #c8934a;" id="resetBtn">🔄 new game</span>
-        </div>
-    </div>
+<button onclick="nextGame()">Next</button>
+
 </div>
 
 <script>
-    (function() {
-        // ----- SHAPE LIBRARY (friendly svg, all different colors)
-        const shapes = [
-            {
-                name: 'circle',
-                label: '⭕ circle',
-                svg: (fillClass) => `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" class="${fillClass} shape-stroke" /></svg>`
-            },
-            {
-                name: 'square',
-                label: '⬛ square',
-                svg: (fillClass) => `<svg viewBox="0 0 100 100"><rect x="20" y="20" width="60" height="60" rx="8" class="${fillClass} shape-stroke" /></svg>`
-            },
-            {
-                name: 'triangle',
-                label: '🔺 triangle',
-                svg: (fillClass) => `<svg viewBox="0 0 100 100"><polygon points="50,15 92,80 8,80" class="${fillClass} shape-stroke" /></svg>`
-            },
-            {
-                name: 'rectangle',
-                label: '🧱 rectangle',
-                svg: (fillClass) => `<svg viewBox="0 0 100 100"><rect x="15" y="25" width="70" height="45" rx="8" class="${fillClass} shape-stroke" /></svg>`
-            },
-            {
-                name: 'oval',
-                label: '🥚 oval',
-                svg: (fillClass) => `<svg viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="40" ry="25" class="${fillClass} shape-stroke" /></svg>`
-            },
-            {
-                name: 'star',
-                label: '⭐ star',
-                svg: (fillClass) => `<svg viewBox="0 0 100 100"><polygon points="50,5 64,35 97,38 72,57 80,92 50,74 20,92 28,57 3,38 36,35" class="${fillClass} shape-stroke" /></svg>`
-            }
-        ];
+const shapes = ["⬛","⭕","🔺","⭐","🟩","🔶"];
 
-        // color rotation for variety (kindergarten love!)
-        const colorClasses = [
-            'shape-fill-blue',
-            'shape-fill-red',
-            'shape-fill-green',
-            'shape-fill-yellow',
-            'shape-fill-purple',
-            'shape-fill-orange'
-        ];
+let answer = "";
 
-        // ----- game state --------
-        let currentQuestionIndex = 0;         // which shape is being asked (0..5)
-        let score = 0;
-        let roundFinished = false;            // true if answered (waiting for next)
-        let currentChoices = [];               // array of { name, label, colorClass }
+function startGame() {
+    document.getElementById("message").innerText = "Tap the correct shape!";
+    
+    answer = shapes[Math.floor(Math.random()*shapes.length)];
+    document.getElementById("question").innerText = answer;
 
-        // DOM elements
-        const questionDisplay = document.getElementById('questionShapeDisplay');
-        const choicesContainer = document.getElementById('choicesContainer');
-        const messageText = document.getElementById('messageText');
-        const messageBox = document.getElementById('messageBox');
-        const nextBtn = document.getElementById('nextBtn');
-        const scoreDisplay = document.getElementById('scoreDisplay');
-        const resetBtn = document.getElementById('resetBtn');
+    let choices = [...shapes].sort(()=>Math.random()-0.5);
 
-        // Helper: shuffle array (for random choices order)
-        function shuffleArray(arr) {
-            for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
-            }
-            return arr;
-        }
+    const container = document.getElementById("choices");
+    container.innerHTML = "";
 
-        // build fresh choices (always 6 shapes, all shapes appear, random order, each with distinct color)
-        function buildRandomChoices() {
-            // assign a random colorClass to each shape (index based but shuffled)
-            let coloredShapes = shapes.map((shape, idx) => {
-                return {
-                    name: shape.name,
-                    label: shape.label,
-                    colorClass: colorClasses[idx % colorClasses.length] // gives variation, not same color twice (if possible)
-                };
-            });
-            // but we want colors to be shuffled too, so shuffle based on random
-            coloredShapes = shuffleArray([...coloredShapes]);
-            return coloredShapes;
-        }
+    choices.forEach(shape=>{
+        const btn = document.createElement("div");
+        btn.className = "shape-btn";
+        btn.innerText = shape;
 
-        // render the question shape (based on currentQuestionIndex)
-        function renderQuestion() {
-            const shapeData = shapes[currentQuestionIndex];
-            // pick a pleasant color for question (maybe first color, but we just use a fixed pretty one: purple)
-            // use purple for question to make it stand out (but we respect shape)
-            const svgString = shapeData.svg('shape-fill-purple');   // question always purple? nice.
-            questionDisplay.innerHTML = svgString;
-        }
-
-        // render all 6 choice buttons using currentChoices
-        function renderChoices() {
-            let html = '';
-            currentChoices.forEach((choice, idx) => {
-                const shapeDef = shapes.find(s => s.name === choice.name);
-                if (!shapeDef) return;
-                // use the color class stored in choice
-                const svgString = shapeDef.svg(choice.colorClass);
-                html += `
-                    <div class="shape-btn" data-shape-name="${choice.name}" data-index="${idx}">
-                        ${svgString}
-                        <span class="shape-label">${choice.label}</span>
-                    </div>
-                `;
-            });
-            choicesContainer.innerHTML = html;
-
-            // attach event listeners to all choice buttons (if round not finished)
-            if (!roundFinished) {
-                document.querySelectorAll('.shape-btn').forEach(btn => {
-                    btn.addEventListener('click', shapeClickHandler);
-                });
+        btn.onclick = ()=>{
+            if(shape === answer){
+                document.getElementById("message").innerText = "🎉 Correct!";
             } else {
-                // if round finished, disable them visually by class (they already have pointer-events: none if we add class)
-                document.querySelectorAll('.shape-btn').forEach(btn => {
-                    btn.classList.add('disabled-btn');
-                });
+                document.getElementById("message").innerText = "❌ Try again!";
             }
-        }
+        };
 
-        // shape click handler
-        function shapeClickHandler(e) {
-            // make sure we find the actual .shape-btn element (in case svg clicked)
-            const btn = e.currentTarget; 
-            if (roundFinished) return; // extra safety
+        container.appendChild(btn);
+    });
+}
 
-            const chosenShape = btn.dataset.shapeName;
-            const correctShape = shapes[currentQuestionIndex].name;
+function nextGame(){
+    startGame();
+}
 
-            // disable all buttons and mark round finished
-            roundFinished = true;
-            document.querySelectorAll('.shape-btn').forEach(b => {
-                b.removeEventListener('click', shapeClickHandler);
-                b.classList.add('disabled-btn');
-            });
-
-            // check correctness
-            const isCorrect = (chosenShape === correctShape);
-            let happyMessage = '';
-            if (isCorrect) {
-                score += 1;
-                happyMessage = '✅ YES! wonderful!';
-            } else {
-                happyMessage = '🙉 oops ... next time!';
-            }
-
-            // update message
-            const correctShapeName = shapes[currentQuestionIndex].label;
-            messageText.innerText = isCorrect ? `🎈 great job!  +1 star` : `🥕 that's a ${correctShapeName}`;
-            // also set emoji different
-            const emojiSpan = document.querySelector('.happy-emojis');
-            if (isCorrect) {
-                emojiSpan.innerHTML = '🌟🌟🌟🌟';
-            } else {
-                emojiSpan.innerHTML = '🌱🐞 keep trying!';
-            }
-
-            // update score display
-            scoreDisplay.innerText = `⭐ ${score}`;
-
-            // enable next button
-            nextBtn.disabled = false;
-        }
-
-        // reset / new game : sets score 0, random question, fresh choices
-        function newGame() {
-            score = 0;
-            scoreDisplay.innerText = `⭐ 0`;
-            // random starting shape
-            currentQuestionIndex = Math.floor(Math.random() * shapes.length);
-            // rebuild choices (shuffled with colors)
-            currentChoices = buildRandomChoices();
-            roundFinished = false;
-            nextBtn.disabled = true;
-
-            // reset message area
-            messageText.innerText = 'tap a shape!';
-            document.querySelector('.happy-emojis').innerHTML = '🧸🌟';
-
-            // re-render
-            renderQuestion();
-            renderChoices();
-        }
-
-        // load next question (without changing score)
-        function nextQuestion() {
-            if (!roundFinished) return; // should not happen because next disabled
-
-            // pick a different shape index than current one (if possible)
-            let newIndex = Math.floor(Math.random() * shapes.length);
-            // avoid repetition for kinder (optional: but if only one shape? no, we have 6)
-            while (shapes.length > 1 && newIndex === currentQuestionIndex) {
-                newIndex = Math.floor(Math.random() * shapes.length);
-            }
-            currentQuestionIndex = newIndex;
-
-            // rebuild choices (new random order & colors)
-            currentChoices = buildRandomChoices();
-
-            // reset flags
-            roundFinished = false;
-            nextBtn.disabled = true;
-
-            // update message
-            messageText.innerText = 'tap a shape!';
-            document.querySelector('.happy-emojis').innerHTML = '🧸🌟';
-
-            // re-render question and choices (with fresh active buttons)
-            renderQuestion();
-            renderChoices();
-        }
-
-        // attach next button listener
-        nextBtn.addEventListener('click', () => {
-            if (!roundFinished) return; // double-check
-            nextQuestion();
-        });
-
-        // reset button
-        resetBtn.addEventListener('click', () => {
-            newGame();
-        });
-
-        // initial start
-        newGame();
-
-        // small extra: ensure disabled button style works after next click
-    })();
+startGame();
 </script>
 
  
+ 
+<br>
+<br>
+<br>
+<br>
+<br>
 <br>
 
-
-<table alighn="right">
+<center>
+<table>
 <tr>
 	<td>
-	 <center><a href="2c.html"><img src="np.png" width="150" length="200"></a></center>
+	 <center><a href="2c.html"><img src="np.png" width="200" length="250"></a></center>
 	</td>
 
 	<td>
-	 <center><a href="index.html"><img src="home.png" width="50" length="50"></a></center>
+	 <center><a href="index.html"><img src="home.png" width="80" length="80"></a></center>
 	</td>
 </tr>
 </table>
-
-
+</center>
 
 </body>
 </html>
