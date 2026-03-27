@@ -1,546 +1,318 @@
 <!DOCTYPE html>
-<html>
-<body background="6back.jpg">
-
-<center><a name="top"></center>
-
-<form>
-
-
-	<table>
-	<tr>
-		<td>
-		<a href="6.html"><img src="1NUM.png" width="250" length="600"></a>
-
-		</td>
-	
-	</tr>
-	</table>
-
- 
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>16 to 20 · draw lines (fixed)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>16 to 20 Match Adventure</title>
     <style>
         * {
             box-sizing: border-box;
             user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
+
         body {
             margin: 0;
             min-height: 100vh;
             background: #b8dff0;
-            font-family: 'Comic Neue', 'Segoe UI', cursive, sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-        }
-        .game-box {
-            max-width: 1100px;
-            width: 100%;
-            background: #feebcc;
-            border-radius: 70px;
-            border: 10px solid #e09d5e;
-            box-shadow: 0 20px 0 #b17438;
-            padding: 25px 20px 35px;
-        }
-        .title {
-            text-align: center;
-            font-size: 3.5rem;
-            color: #2d5128;
-            text-shadow: 4px 4px 0 #ffd78c;
-            margin: 0;
-        }
-        .sub {
-            text-align: center;
-            font-size: 1.8rem;
-            background: #fff0cc;
-            display: inline-block;
-            padding: 8px 40px;
-            margin: 0 0 20px;
-            border-radius: 50px;
-            border: 4px solid #bb833f;
-        }
-        .match-area {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            gap: 20px;
-            background: #f8dbb0;
-            border-radius: 60px;
-            padding: 30px 15px;
-            border: 5px dashed #b87a40;
-            position: relative;
-            min-height: 500px;
-        }
-        /* left numbers column */
-        .nums {
-            flex: 0 0 150px;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            justify-content: space-around;
-            z-index: 5;
-        }
-        .num-btn {
-            background: #ffad60;
-            border: 6px solid #b55a1a;
-            border-radius: 60px;
-            padding: 20px 0;
-            text-align: center;
-            font-size: 4rem;
-            font-weight: bold;
-            color: #2c2b0f;
-            box-shadow: 0 12px 0 #9b4f1a;
-            cursor: pointer;
-            transition: 0.05s;
-            position: relative;
-        }
-        .num-btn.selected {
-            background: #ffe57f;
-            border-color: #c88128;
-            box-shadow: 0 12px 0 #b3631a, 0 0 0 4px #ffc107;
-        }
-        .num-btn.matched {
-            background: #a5d6a5;
-            border-color: #2e7d32;
-            box-shadow: 0 12px 0 #1b5e20;
-            opacity: 0.9;
-            cursor: default;
-        }
-        .num-btn:active:not(.matched) {
-            transform: translateY(8px);
-            box-shadow: 0 4px 0 #9b4f1a;
+            align-items: center;
+            padding: 10px;
         }
 
-        /* right images column */
-        .imgs {
-            flex: 0 0 200px;
+        .header-img {
+            max-width: 180px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .game-box {
+            max-width: 600px;
+            width: 100%;
+            background: #feebcc;
+            border-radius: 40px;
+            border: 6px solid #e09d5e;
+            box-shadow: 0 10px 0 #b17438;
+            padding: 15px;
+            position: relative;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #2d5128;
+            margin: 0 0 10px;
+        }
+
+        .sub {
+            display: block;
+            text-align: center;
+            font-size: 0.9rem;
+            background: #fff0cc;
+            padding: 5px 15px;
+            border-radius: 50px;
+            margin-bottom: 15px;
+            border: 2px solid #bb833f;
+        }
+
+        .match-area {
+            display: flex;
+            justify-content: space-between;
+            background: #f8dbb0;
+            border-radius: 20px;
+            padding: 15px 10px;
+            border: 3px dashed #b87a40;
+            position: relative;
+            min-height: 400px;
+        }
+
+        .nums, .imgs {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            justify-content: space-around;
+            justify-content: space-between;
+            gap: 10px;
             z-index: 5;
+            width: 35%;
         }
+
+        .num-btn {
+            background: #ffad60;
+            border: 3px solid #b55a1a;
+            border-radius: 15px;
+            padding: 10px 5px;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            box-shadow: 0 4px 0 #9b4f1a;
+            cursor: pointer;
+        }
+
+        .num-btn.selected { background: #ffe57f; border-color: #ffc107; box-shadow: 0 0 10px #ffc107; }
+
         .img-card {
             background: #c7e3c7;
-            border: 6px solid #2f7d4d;
-            border-radius: 60px;
-            padding: 15px 5px;
+            border: 3px solid #2f7d4d;
+            border-radius: 15px;
+            padding: 5px;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             align-items: center;
-            gap: 8px 12px;
-            box-shadow: 0 12px 0 #236b3a;
-            cursor: pointer;
-            transition: 0.05s;
-        }
-        .img-card.matched {
-            background: #a5d6a5;
-            border-color: #2e7d32;
-            box-shadow: 0 12px 0 #1b5e20;
-            opacity: 0.9;
-        }
-        .img-card:active:not(.matched) {
-            transform: translateY(8px);
+            gap: 2px;
             box-shadow: 0 4px 0 #236b3a;
-        }
-        .smiley {
-            width: 35px;
-            height: 35px;
-            background: #ffdb7c;
-            border-radius: 50%;
-            border: 3px solid #b3761a;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            color: #7b4a1e;
-        }
-        .smiley::after {
-            content: "☻";
+            cursor: pointer;
+            min-height: 65px;
         }
 
-        /* canvas for lines - positioned absolutely over the match area */
-        .line-canvas-container {
+        .smiley { font-size: 10px; }
+
+        .matched {
+            opacity: 0.4;
+            pointer-events: none;
+            box-shadow: none !important;
+            transform: scale(0.9);
+        }
+
+        #lineCanvas {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             pointer-events: none;
             z-index: 10;
         }
-        #lineCanvas {
-            width: 100%;
-            height: 100%;
-            display: block;
+
+        .message {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 1rem;
+            background: #fff4cf;
+            border-radius: 15px;
+            padding: 10px;
+            border: 3px solid #cb9a5b;
         }
 
         .controls {
             display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin: 25px 0 15px;
-            flex-wrap: wrap;
+            gap: 10px;
+            width: 100%;
+            margin-top: 15px;
         }
-        .btn {
-            background: #ffb252;
+
+        .control-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 15px;
             border: none;
-            border-radius: 50px;
-            font-size: 2rem;
-            padding: 12px 35px;
+            background: #ffb156;
+            color: #3e301a;
             font-weight: bold;
-            border-bottom: 8px solid #9b632e;
+            box-shadow: 0 4px 0 #a06730;
             cursor: pointer;
-            transition: 0.05s;
+            font-family: inherit;
         }
-        .btn:active {
-            transform: translateY(6px);
-            border-bottom-width: 3px;
-        }
-        .message {
+
+        .control-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #a06730; }
+
+        #star-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.96);
+            z-index: 1000;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            font-size: 2rem;
-            background: #fff4cf;
-            border-radius: 60px;
-            padding: 15px 25px;
-            border: 5px solid #cb9a5b;
-            min-height: 4rem;
         }
-        .weather {
-            text-align: right;
-            color: #6b5a3a;
-            font-size: 1.2rem;
-            margin-top: 10px;
+
+        .big-star { font-size: 100px; color: #FFD700; animation: spin 2s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .next-btn {
+            background: #FF9800; color: white; border: none; padding: 15px 40px;
+            font-size: 24px; border-radius: 50px; cursor: pointer;
+            box-shadow: 0 6px #e68a00; margin-top: 20px;
         }
+
+        .nav-table { width: 100%; margin-top: 15px; }
     </style>
 </head>
 <body>
-<div class="game-box">
-    <div class="title">16 · 17 · 18 · 19 · 20</div>
-    <div class="sub">✏️ draw a line to match number & group</div>
 
-    <div class="match-area" id="matchArea">
-        <!-- left numbers -->
-        <div class="nums" id="numbersColumn">
-            <div class="num-btn" data-num="16">16</div>
-            <div class="num-btn" data-num="17">17</div>
-            <div class="num-btn" data-num="18">18</div>
-            <div class="num-btn" data-num="19">19</div>
-            <div class="num-btn" data-num="20">20</div>
-        </div>
+    <img src="1NUM.png" class="header-img" alt="Numbers">
 
-        <!-- right images (will be populated by js) -->
-        <div class="imgs" id="imagesColumn"></div>
+    <div class="game-box">
+        <div class="title">16 • 17 • 18 • 19 • 20</div>
+        <span class="sub">✏️ Match number and group</span>
 
-        <!-- canvas overlay for drawing lines -->
-        <div class="line-canvas-container">
+        <div class="match-area" id="matchArea">
+            <div class="nums" id="numbersColumn"></div>
+            <div class="imgs" id="imagesColumn"></div>
             <canvas id="lineCanvas"></canvas>
         </div>
+
+        <div id="message" class="message">Tap a number, then tap its group!</div>
+        
+        <div class="controls">
+            <button class="control-btn" onclick="initGame()">🔄 Ikutin ang mga Numero</button>
+        </div>
     </div>
 
-    <div class="controls">
-        <button class="btn" id="undoBtn">↩️ undo last</button>
-        <button class="btn" id="clearAllBtn">🔄 start over (clear all)</button>
+    <div id="star-overlay">
+        <div class="big-star">⭐</div>
+        <h1 style="color: #ff4500;">AWESOME!</h1>
+        <p>Natapos mo na ang 1 hanggang 20!</p>
+        <button class="next-btn" onclick="window.location.href='6e.html'">Next Game ➔</button>
+        <p onclick="initGame()" style="cursor:pointer; text-decoration: underline; margin-top: 20px; color: #666;">Try Again</p>
     </div>
-
-    <div class="message" id="message">👆 tap a number, then tap its matching group</div>
-    <div class="weather">31°C · Partly sunny ⛅</div>
-</div>
-
+<center>
+    <table class="nav-table">
+        <tr>
+            <td align="center"><a href="index.html"><img src="home.png" width="45"></a></td>
+            <td align="center"><a href="6e.html"><img src="np.png" width="100"></a></td>
+        </tr>
+    </table>
+</center>
 <script>
-(function() {
     const numbers = [16, 17, 18, 19, 20];
+    let selectedNum = null;
+    let selectedEl = null;
+    let matches = {};
     
-    // DOM elements
-    const numbersColumn = document.getElementById('numbersColumn');
-    const imagesColumn = document.getElementById('imagesColumn');
     const canvas = document.getElementById('lineCanvas');
     const ctx = canvas.getContext('2d');
-    const messageEl = document.getElementById('message');
-    const undoBtn = document.getElementById('undoBtn');
-    const clearAllBtn = document.getElementById('clearAllBtn');
-    const matchArea = document.getElementById('matchArea');
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-    // State
-    let selectedNum = null;
-    let matches = {};              // {16: true, 17: true, ...}
-    let lines = [];                 // array of {fromX, fromY, toX, toY, num}
-    
-    // Store element references
-    let numberButtons = [];
-    let imageCards = [];
+    function playSound(isCorrect) {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = isCorrect ? 'sine' : 'square';
+        osc.frequency.setValueAtTime(isCorrect ? 600 : 150, audioCtx.currentTime);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.15);
+    }
 
-    // Initialize right side with shuffled images
-    function initImages() {
-        imagesColumn.innerHTML = '';
-        const shuffled = [...numbers].sort(() => Math.random() - 0.5);
+    function initGame() {
+        matches = {};
+        selectedNum = null;
+        document.getElementById('star-overlay').style.display = 'none';
+        document.getElementById('message').innerText = "Simulan na natin!";
         
-        shuffled.forEach(num => {
+        const numCol = document.getElementById('numbersColumn');
+        const imgCol = document.getElementById('imagesColumn');
+        numCol.innerHTML = ''; imgCol.innerHTML = '';
+        
+        // Clear Canvas
+        resizeCanvas();
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        numbers.forEach(n => {
+            const btn = document.createElement('div');
+            btn.className = 'num-btn';
+            btn.innerText = n;
+            btn.onclick = () => {
+                if(!matches[n]) {
+                    document.querySelectorAll('.num-btn').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    selectedNum = n;
+                    selectedEl = btn;
+                    document.getElementById('message').innerText = "Hanapin ang group na may " + n + "!";
+                }
+            };
+            numCol.appendChild(btn);
+        });
+
+        const shuffled = [...numbers].sort(() => Math.random() - 0.5);
+        shuffled.forEach(n => {
             const card = document.createElement('div');
             card.className = 'img-card';
-            card.dataset.num = num;
-            
-            // Add smiley faces (num times)
-            for (let i = 0; i < num; i++) {
-                const smiley = document.createElement('span');
-                smiley.className = 'smiley';
-                card.appendChild(smiley);
-            }
-            
-            imagesColumn.appendChild(card);
+            for(let i=0; i<n; i++) card.innerHTML += '<span class="smiley">😊</span>';
+            card.onclick = () => {
+                if(!matches[n] && selectedNum === n) {
+                    matches[n] = true;
+                    drawMatchLine(selectedEl, card);
+                    playSound(true);
+                    selectedEl.classList.add('matched');
+                    card.classList.add('matched');
+                    selectedNum = null;
+                    document.getElementById('message').innerText = "Tama! Ang galing! 🌟";
+                    if(Object.keys(matches).length === 5) {
+                        setTimeout(() => document.getElementById('star-overlay').style.display='flex', 800);
+                    }
+                } else if(!matches[n] && selectedNum) {
+                    playSound(false);
+                    document.getElementById('message').innerText = "Mali, bilangin muli! 🧐";
+                }
+            };
+            imgCol.appendChild(card);
         });
-        
-        // Update image cards reference
-        imageCards = Array.from(document.querySelectorAll('.img-card'));
     }
 
-    // Update canvas size and redraw all lines
-    function redrawLines() {
-        const rect = matchArea.getBoundingClientRect();
+    function resizeCanvas() {
+        const rect = document.getElementById('matchArea').getBoundingClientRect();
         canvas.width = rect.width;
         canvas.height = rect.height;
-        
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        // Draw all matched lines
-        lines.forEach(line => {
-            ctx.beginPath();
-            ctx.moveTo(line.fromX, line.fromY);
-            ctx.lineTo(line.toX, line.toY);
-            ctx.lineWidth = 8;
-            ctx.strokeStyle = '#2e7d32';
-            ctx.shadowColor = '#1b5e20';
-            ctx.shadowBlur = 6;
-            ctx.stroke();
-        });
-        
-        ctx.shadowBlur = 0;
     }
 
-    // Get center coordinates of an element relative to matchArea
-    function getElementCenter(el) {
-        const areaRect = matchArea.getBoundingClientRect();
-        const elRect = el.getBoundingClientRect();
+    function drawMatchLine(el1, el2) {
+        const rect = document.getElementById('matchArea').getBoundingClientRect();
+        const r1 = el1.getBoundingClientRect();
+        const r2 = el2.getBoundingClientRect();
         
-        return {
-            x: elRect.left + elRect.width / 2 - areaRect.left,
-            y: elRect.top + elRect.height / 2 - areaRect.top
-        };
+        ctx.beginPath();
+        ctx.moveTo(r1.right - rect.left, r1.top + r1.height/2 - rect.top);
+        ctx.lineTo(r2.left - rect.left, r2.top + r2.height/2 - rect.top);
+        ctx.strokeStyle = '#2e7d32';
+        ctx.lineWidth = 5;
+        ctx.stroke();
     }
 
-    // Add a line between number and image
-    function addLine(num, fromEl, toEl) {
-        const fromPos = getElementCenter(fromEl);
-        const toPos = getElementCenter(toEl);
-        
-        lines.push({
-            fromX: fromPos.x,
-            fromY: fromPos.y,
-            toX: toPos.x,
-            toY: toPos.y,
-            num: num
-        });
-        
-        redrawLines();
-    }
-
-    // Remove last line
-    function undoLast() {
-        if (lines.length === 0) return false;
-        
-        const last = lines.pop();
-        delete matches[last.num];
-        
-        // Update classes
-        const numBtn = document.querySelector(`.num-btn[data-num="${last.num}"]`);
-        const imgCard = document.querySelector(`.img-card[data-num="${last.num}"]`);
-        
-        if (numBtn) numBtn.classList.remove('matched', 'selected');
-        if (imgCard) imgCard.classList.remove('matched');
-        
-        redrawLines();
-        return true;
-    }
-
-    // Reset everything
-    function resetAll() {
-        selectedNum = null;
-        matches = {};
-        lines = [];
-        
-        // Remove all matched/selected classes
-        document.querySelectorAll('.num-btn').forEach(btn => {
-            btn.classList.remove('matched', 'selected');
-        });
-        document.querySelectorAll('.img-card').forEach(card => {
-            card.classList.remove('matched');
-        });
-        
-        // Reshuffle images
-        initImages();
-        redrawLines();
-        messageEl.innerHTML = '👆 tap a number, then tap its matching group';
-    }
-
-    // Check if all numbers are matched
-    function allMatched() {
-        return numbers.every(n => matches[n] === true);
-    }
-
-    // Event: number click
-    numbersColumn.addEventListener('click', (e) => {
-        const btn = e.target.closest('.num-btn');
-        if (!btn) return;
-        
-        const num = parseInt(btn.dataset.num);
-        
-        if (matches[num]) {
-            messageEl.innerHTML = `✅ ${num} is already matched!`;
-            return;
-        }
-        
-        // Remove selected class from all
-        numberButtons.forEach(b => b.classList.remove('selected'));
-        
-        // Set new selected
-        btn.classList.add('selected');
-        selectedNum = num;
-        messageEl.innerHTML = `✏️ selected ${num} — now tap the group with ${num} faces`;
-    });
-
-    // Event: image card click
-    imagesColumn.addEventListener('click', (e) => {
-        const card = e.target.closest('.img-card');
-        if (!card) return;
-        
-        const qty = parseInt(card.dataset.num);
-        
-        if (matches[qty]) {
-            messageEl.innerHTML = `🌟 ${qty} is already matched!`;
-            return;
-        }
-        
-        if (selectedNum === null) {
-            messageEl.innerHTML = '👆 first tap a number on the left!';
-            return;
-        }
-        
-        if (matches[selectedNum]) {
-            selectedNum = null;
-            numberButtons.forEach(b => b.classList.remove('selected'));
-            messageEl.innerHTML = '👆 tap a number again';
-            return;
-        }
-        
-        // Check if match
-        if (qty === selectedNum) {
-            // Find elements
-            const numBtn = document.querySelector(`.num-btn[data-num="${selectedNum}"]`);
-            const imgCard = document.querySelector(`.img-card[data-num="${selectedNum}"]`);
-            
-            if (numBtn && imgCard) {
-                // Add line
-                addLine(selectedNum, numBtn, imgCard);
-                
-                // Mark as matched
-                matches[selectedNum] = true;
-                numBtn.classList.add('matched');
-                numBtn.classList.remove('selected');
-                imgCard.classList.add('matched');
-                
-                if (allMatched()) {
-                    messageEl.innerHTML = '🎉 PERFECT! 16 to 20 all matched! 🎉';
-                } else {
-                    messageEl.innerHTML = '✔️ matched! pick another number';
-                }
-                
-                selectedNum = null;
-            }
-        } else {
-            messageEl.innerHTML = `❌ ${selectedNum} doesn't match ${qty} — try again`;
-        }
-    });
-
-    // Undo button
-    undoBtn.addEventListener('click', () => {
-        if (undoLast()) {
-            messageEl.innerHTML = '↩️ last match undone';
-        } else {
-            messageEl.innerHTML = 'nothing to undo';
-        }
-    });
-
-    // Clear all button
-    clearAllBtn.addEventListener('click', resetAll);
-
-    // Handle window resize
-    window.addEventListener('resize', () => {
-        if (lines.length > 0) {
-            // Recalculate line positions
-            const newLines = [];
-            lines.forEach(line => {
-                const numBtn = document.querySelector(`.num-btn[data-num="${line.num}"]`);
-                const imgCard = document.querySelector(`.img-card[data-num="${line.num}"]`);
-                
-                if (numBtn && imgCard && matches[line.num]) {
-                    const fromPos = getElementCenter(numBtn);
-                    const toPos = getElementCenter(imgCard);
-                    newLines.push({
-                        fromX: fromPos.x,
-                        fromY: fromPos.y,
-                        toX: toPos.x,
-                        toY: toPos.y,
-                        num: line.num
-                    });
-                }
-            });
-            lines = newLines;
-        }
-        redrawLines();
-    });
-
-    // Initial setup
-    numberButtons = Array.from(document.querySelectorAll('.num-btn'));
-    initImages();
-    
-    // Set canvas size initially
-    setTimeout(() => {
-        const rect = matchArea.getBoundingClientRect();
-        canvas.width = rect.width;
-        canvas.height = rect.height;
-    }, 50);
-})();
+    window.onresize = () => { resizeCanvas(); initGame(); };
+    initGame();
 </script>
-
-
-<br>
-<br>
-
-<center>
-<table>
-<tr>
-	<td>
-	 <center><a href="index.html"><img src="home.png" width="50" length="50"></a></center>
-	</td>
-
-	<td>
-	 <center><a href="6e.html"><img src="np.png" width="150" length="200"></a></center>
-	</td>
-</tr>
-</table>
-</center>
-
-
-
-<hr width=100% size="5">
-
-<center><a name="DOWN"></center>
-<center><a href="#top">Page Up</center>
-
 </body>
 </html>

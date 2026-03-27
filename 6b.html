@@ -1,601 +1,313 @@
 <!DOCTYPE html>
-<html>
-<body background="6back.jpg">
-
-<center><a name="top"></center>
-
-<form>
-
-
-	<table>
-	<tr>
-		<td>
-		<a href="6.html"><img src="1NUM.png" width="250" length="600"></a>
-
-		</td>
-	
-	</tr>
-	</table>
-
- 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>kindergarten math · numbers 6 to 10 · animal match</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Animal Match 6-10 Adventure</title>
     <style>
         * {
             box-sizing: border-box;
-            user-select: none; /* keep everything tap-friendly */
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
+
         body {
             margin: 0;
             min-height: 100vh;
-            background: #b8e1d4;  /* soft seafoam */
-            background-image: radial-gradient(circle at 30px 30px, #dcf7e9 3px, transparent 3px), 
-                              radial-gradient(circle at 80px 120px, #fce8b2 5px, transparent 5px);
-            background-size: 100px 200px, 200px 150px;
-            font-family: 'Comic Neue', 'Segoe UI', 'Chalkboard SE', cursive, sans-serif;
+            background: #b8e1d4;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 16px;
+            padding: 10px;
+        }
+
+        .header-img {
+            max-width: 180px;
+            width: 100%;
+            margin-bottom: 10px;
         }
 
         .game-box {
-            max-width: 1050px;
+            max-width: 550px;
             width: 100%;
             background: #fef9e7;
-            border-radius: 70px 70px 50px 50px;
-            border: 8px solid #e5b45b;
-            box-shadow: 0 25px 0 #b47d44, 0 30px 20px rgba(0,0,0,0.15);
-            padding: 30px 20px 40px 20px;
+            border-radius: 40px;
+            border: 6px solid #e5b45b;
+            box-shadow: 0 10px 0 #b47d44;
+            padding: 15px;
+            position: relative;
         }
 
         .title {
             text-align: center;
-            margin: 0 0 5px;
-            font-size: 3rem;
-            font-weight: 700;
+            font-size: 1.4rem;
             color: #2e4c3c;
-            text-shadow: 4px 4px 0 #f1cf98, 6px 6px 0 #c99b5b;
-            letter-spacing: 1px;
-            word-break: break-word;
+            margin: 0 0 10px;
         }
 
         .subhead {
+            display: block;
             text-align: center;
-            font-size: 1.6rem;
+            font-size: 0.9rem;
             background: #ffdcb5;
-            display: inline-block;
-            padding: 10px 40px;
-            margin: 0 auto 30px auto;
-            border-radius: 60px;
-            border: 4px solid #ab7b44;
-            color: #2d4e2d;
-            font-weight: 600;
-            box-shadow: inset 0 3px 8px #ffeecc;
+            padding: 5px 15px;
+            border-radius: 50px;
+            margin-bottom: 15px;
+            border: 2px solid #ab7b44;
         }
 
         .board {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
+            gap: 10px;
             background: #ebd5b3;
-            border-radius: 80px;
-            padding: 40px 15px;
-            border: 6px dashed #c48f5a;
-            box-shadow: inset 0 0 0 8px #fff8e0;
+            border-radius: 20px;
+            padding: 10px;
+            border: 3px dashed #c48f5a;
         }
 
         .panel {
-            flex: 1 1 290px;
-            min-width: 270px;
+            flex: 1;
             background: #fffae9;
-            border-radius: 60px;
-            padding: 25px 15px;
-            border: 5px solid #d6a469;
-            box-shadow: 0 10px 0 #b0763e, 0 12px 16px -5px #855f33;
+            border-radius: 15px;
+            padding: 10px 5px;
+            border: 2px solid #d6a469;
         }
 
         .panel h2 {
+            font-size: 0.9rem;
             text-align: center;
-            font-size: 2.4rem;
-            margin: -10px 0 15px 0;
+            margin: 0 0 10px;
             background: #fbdea4;
-            border-radius: 40px;
-            padding: 8px 15px;
-            display: inline-block;
-            width: auto;
-            margin-left: auto;
-            margin-right: auto;
-            border: 4px solid #c19350;
-            color: #3e301a;
-        }
-
-        /* numbers area (left) 6-10 */
-        .numbers-row {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
+            border-radius: 10px;
         }
 
         .num-card {
             background: #facc6f;
-            border: 6px solid #b27226;
-            border-radius: 80px;
-            padding: 18px 5px;
+            border: 3px solid #b27226;
+            border-radius: 20px;
+            padding: 10px 0;
             text-align: center;
-            font-size: 5rem;
+            font-size: 2.2rem;
             font-weight: bold;
-            color: #2e3b21;
-            line-height: 1;
-            box-shadow: 0 8px 0 #8f5827, 0 12px 18px rgba(0,0,0,0.2);
+            margin-bottom: 10px;
+            box-shadow: 0 4px 0 #8f5827;
             cursor: pointer;
-            transition: all 0.05s ease;
-            text-shadow: 3px 3px 0 #ffda94;
-        }
-
-        .num-card:active {
-            transform: translateY(6px);
-            box-shadow: 0 3px 0 #8f5827, 0 7px 10px rgba(0,0,0,0.15);
-        }
-
-        /* quantity area (right) – animal images (css faces) */
-        .quantity-area {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
         }
 
         .animal-card {
             background: #b6d9c7;
-            border: 6px solid #42855e;
-            border-radius: 70px;
-            padding: 20px 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 8px 0 #246b3a, 0 12px 18px rgba(0,0,0,0.2);
-            cursor: pointer;
-            transition: 0.05s;
-        }
-
-        .animal-card:active {
-            transform: translateY(6px);
-            box-shadow: 0 3px 0 #246b3a, 0 7px 12px rgba(0,0,0,0.1);
-        }
-
-        /* face group – we create little animal faces as "images" */
-        .face-group {
+            border: 3px solid #42855e;
+            border-radius: 20px;
+            padding: 10px 5px;
+            margin-bottom: 10px;
+            min-height: 85px;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             align-items: center;
-            gap: 12px 20px;
-            padding: 5px 5px;
+            gap: 4px;
+            box-shadow: 0 4px 0 #246b3a;
+            cursor: pointer;
         }
 
         .animal-face {
-            width: 60px;
-            height: 60px;
-            background: #fbe176;  /* lion-ish face */
+            width: 24px;
+            height: 24px;
+            background: #fbe176;
             border-radius: 50%;
-            border: 4px solid #8b5a2b;
-            box-shadow: 0 5px 0 #b37b48, 0 6px 8px #563e1f;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            border: 1px solid #8b5a2b;
             position: relative;
         }
 
-        .face-inner {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: -8px;
-        }
-
-        .eyes {
-            display: flex;
-            gap: 12px;
-            margin-top: 6px;
-        }
-
-        .eye {
-            width: 12px;
-            height: 16px;
-            background: #2b2216;
+        .animal-face::before, .animal-face::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            width: 8px;
+            height: 8px;
+            background: inherit;
             border-radius: 50%;
-            border-bottom: 3px solid white;
+            border: 1px solid #8b5a2b;
+        }
+        .animal-face::before { left: -3px; }
+        .animal-face::after { right: -3px; }
+
+        .matched-num, .matched-animal {
+            background: #c7e7c7 !important;
+            border-color: #1b7530 !important;
+            box-shadow: none !important;
+            opacity: 0.5;
+            transform: scale(0.9);
+            pointer-events: none;
         }
 
-        .snout {
-            width: 16px;
-            height: 10px;
-            background: #c97e5a;
-            border-radius: 40%;
-            margin-top: 4px;
-            border-bottom: 2px solid #6e412b;
-        }
-
-        .ears {
-            display: flex;
-            gap: 18px;
-            margin-top: -12px;
-        }
-
-        .ear {
-            width: 16px;
-            height: 16px;
-            background: #dba552;
-            border-radius: 50% 50% 0 0;
-            border: 3px solid #7b4d22;
-            transform: rotate(20deg);
-        }
-
-        .ear.right {
-            transform: rotate(-20deg);
-        }
-
-        /* for variety some animals use different colors */
-        .animal-face:nth-child(even) {
-            background: #b3ddf2;
-            border-color: #2f6396;
-        }
-        .animal-face:nth-child(even) .snout { background: #eb9a7b; }
-        .animal-face:nth-child(even) .ear { background: #97c9e8; }
-
-        .animal-face:nth-child(3n) {
-            background: #f8b88b;
-            border-color: #aa5835;
-        }
-
-        .animal-hint {
-            font-size: 0.9rem;
-            opacity: 0.6;
-            text-align: center;
-        }
-
-        /* matched style */
-        .matched-num {
-            background: #b3d9a8;
-            border-color: #1b7530;
-            box-shadow: 0 8px 0 #166b29;
-            border-width: 6px;
-            opacity: 0.9;
-        }
-
-        .matched-animal {
-            background: #c7e7c7;
-            border-color: #1b7530;
-            border-width: 6px;
-            box-shadow: 0 8px 0 #166b29;
-        }
-
-        /* message & reset */
         .feedback {
             text-align: center;
-            margin: 30px 0 15px;
-            font-size: 2rem;
+            margin: 15px 0;
+            font-size: 1rem;
             background: #fbeab6;
-            border-radius: 60px;
-            padding: 18px 25px;
-            border: 5px solid #ca9a5a;
-            color: #2e4827;
-            font-weight: 600;
-            min-height: 5.5rem;
-            box-shadow: inset 0 4px 12px #fff2bf;
+            border-radius: 15px;
+            padding: 10px;
+            border: 3px solid #ca9a5a;
+            min-height: 50px;
         }
 
-        .btn-reset {
-            background: #fdbe6b;
+        /* Congratulations Star Screen */
+        #star-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.96);
+            z-index: 1000;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .big-star {
+            font-size: 120px;
+            color: #FFD700;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            to { transform: rotate(360deg) scale(1); }
+        }
+
+        .next-btn {
+            background: #FF9800;
+            color: white;
             border: none;
-            font-size: 2.4rem;
+            padding: 15px 40px;
+            font-size: 24px;
             border-radius: 50px;
-            padding: 10px 40px;
-            font-weight: bold;
-            color: #2f3b1c;
-            border-bottom: 9px solid #a56d36;
             cursor: pointer;
-            transition: 0.07s;
-            box-shadow: 0 8px 0 #976830;
-            margin: 10px 0 5px;
+            box-shadow: 0 6px #e68a00;
+            margin-top: 20px;
             font-family: inherit;
         }
 
-        .btn-reset:active {
-            transform: translateY(7px);
-            border-bottom-width: 3px;
-            box-shadow: 0 2px 0 #976830;
-        }
-
-        .footer {
-            display: flex;
-            justify-content: center;
-        }
-
-        @media (max-width: 600px) {
-            .num-card { font-size: 4rem; }
-            .animal-face { width: 45px; height: 45px; }
-            .eye { width: 8px; height: 12px; }
-        }
+        .nav-table { width: 100%; margin-top: 15px; }
     </style>
 </head>
 <body>
-<div class="game-box">
-    <div class="title">🐼 6 7 8 9 10 🐨</div>
-    <div style="text-align: center;"><span class="subhead">tap a number → tap the animal group</span></div>
 
-    <div class="board">
-        <!-- LEFT: numbers 6 to 10 -->
-        <div class="panel">
-            <h2>🔢 six – ten</h2>
-            <div class="numbers-row" id="numbersPanel"></div>
+    <img src="1NUM.png" class="header-img" alt="Numbers">
+
+    <div class="game-box">
+        <div class="title">🐼 6 7 8 9 10 🐨</div>
+        <span class="subhead">Tap number → Tap animals</span>
+
+        <div class="board">
+            <div class="panel">
+                <h2>Numbers</h2>
+                <div id="numbersPanel"></div>
+            </div>
+            <div class="panel">
+                <h2>Animals</h2>
+                <div id="quantityPanel"></div>
+            </div>
         </div>
 
-        <!-- RIGHT: animal faces (quantities) -->
-        <div class="panel">
-            <h2>🐧 count faces</h2>
-            <div class="quantity-area" id="quantityPanel"></div>
-        </div>
+        <div id="messageDisplay" class="feedback">Ready?</div>
     </div>
 
-    <div class="feedback" id="messageDisplay">👋 pick 6, then find 6 animal friends!</div>
-    <div class="footer"><button class="btn-reset" id="resetGameBtn">🔄 new round</button></div>
-</div>
-
-<script>
-(function() {
-    // numbers 6 through 10
-    const NUMBER_VALUES = [6, 7, 8, 9, 10];
-
-    const numbersPanel = document.getElementById('numbersPanel');
-    const quantityPanel = document.getElementById('quantityPanel');
-    const messageEl = document.getElementById('messageDisplay');
-    const resetBtn = document.getElementById('resetGameBtn');
-
-    // state
-    let selectedNumber = null;          // 6-10
-    let matches = {};                   // { 6: true, 7: true ... }
-    let numberElements = new Map();      // num -> DOM card (left)
-    let quantityElements = new Map();    // num -> DOM card (right)
-
-    // ----- helper: create animal faces card (quantity representation) -----
-    function createAnimalCard(num) {
-        const card = document.createElement('div');
-        card.className = 'animal-card';
-        card.dataset.quantity = num;
-
-        const faceGroup = document.createElement('div');
-        faceGroup.className = 'face-group';
-
-        for (let i = 0; i < num; i++) {
-            const face = document.createElement('div');
-            face.className = 'animal-face';
-
-            // build little face features (just for cuteness)
-            // ears
-            const earsDiv = document.createElement('div');
-            earsDiv.className = 'ears';
-            const earLeft = document.createElement('div');
-            earLeft.className = 'ear';
-            const earRight = document.createElement('div');
-            earRight.className = 'ear right';
-            earsDiv.appendChild(earLeft);
-            earsDiv.appendChild(earRight);
-
-            // inner face (eyes + snout)
-            const inner = document.createElement('div');
-            inner.className = 'face-inner';
-            const eyesDiv = document.createElement('div');
-            eyesDiv.className = 'eyes';
-            const eyeL = document.createElement('div');
-            eyeL.className = 'eye';
-            const eyeR = document.createElement('div');
-            eyeR.className = 'eye';
-            eyesDiv.appendChild(eyeL);
-            eyesDiv.appendChild(eyeR);
-
-            const snout = document.createElement('div');
-            snout.className = 'snout';
-
-            inner.appendChild(eyesDiv);
-            inner.appendChild(snout);
-
-            face.appendChild(earsDiv);
-            face.appendChild(inner);
-
-            faceGroup.appendChild(face);
-        }
-
-        card.appendChild(faceGroup);
-
-        // tiny text hint (optional)
-        const hint = document.createElement('div');
-        hint.className = 'animal-hint';
-        hint.textContent = '🐾'.repeat(num);
-        card.appendChild(hint);
-
-        return card;
-    }
-
-    // ----- number card (left) -----
-    function createNumberCard(num) {
-        const card = document.createElement('div');
-        card.className = 'num-card';
-        card.dataset.number = num;
-        card.textContent = num;
-        return card;
-    }
-
-    // ----- render everything -----
-    function renderGame() {
-        numbersPanel.innerHTML = '';
-        quantityPanel.innerHTML = '';
-        numberElements.clear();
-        quantityElements.clear();
-
-        // left side numbers in order (6,7,8,9,10)
-        const leftNumbers = [...NUMBER_VALUES].sort((a,b) => a - b);
-
-        // right side shuffled for fun (quantities)
-        const rightQuantities = [...NUMBER_VALUES].sort(() => Math.random() - 0.5);
-
-        // create left cards
-        for (let num of leftNumbers) {
-            const card = createNumberCard(num);
-            if (matches[num]) {
-                card.classList.add('matched-num');
-            }
-            numbersPanel.appendChild(card);
-            numberElements.set(num, card);
-        }
-
-        // create right (animal) cards
-        for (let num of rightQuantities) {
-            const card = createAnimalCard(num);
-            card.dataset.quantity = num;
-            if (matches[num]) {
-                card.classList.add('matched-animal');
-            }
-            quantityPanel.appendChild(card);
-            quantityElements.set(num, card);
-        }
-
-        // reset selected
-        selectedNumber = null;
-        updateMessage();
-    }
-
-    // ----- check if all matched -----
-    function allMatched() {
-        return NUMBER_VALUES.every(n => matches[n] === true);
-    }
-
-    // ----- update message based on state -----
-    function updateMessage() {
-        if (allMatched()) {
-            messageEl.innerHTML = '🎈🎉 CONGRATS! 6 to 10 all matched! 🎉🎈';
-        } else if (selectedNumber !== null) {
-            messageEl.innerHTML = `👉 selected number ${selectedNumber} — now tap the group with ${selectedNumber} faces`;
-        } else {
-            messageEl.innerHTML = '👆 tap a number (6–10), then the matching animal group!';
-        }
-    }
-
-    // ----- clear any selection visuals (only state used) -----
-    // (no extra highlight, just message)
-
-    // ----- EVENT DELEGATION -----
-    numbersPanel.addEventListener('click', (e) => {
-        const numCard = e.target.closest('.num-card');
-        if (!numCard) return;
-
-        const num = parseInt(numCard.dataset.number);
-
-        if (matches[num]) {
-            messageEl.innerHTML = `✅ number ${num} is already matched! (great)`;
-            return;
-        }
-
-        // set selected
-        selectedNumber = num;
-        updateMessage();
-    });
-
-    quantityPanel.addEventListener('click', (e) => {
-        const animalCard = e.target.closest('.animal-card');
-        if (!animalCard) return;
-
-        const qty = parseInt(animalCard.dataset.quantity);
-
-        if (matches[qty]) {
-            messageEl.innerHTML = `🌟 the ${qty}‑face group is already matched!`;
-            return;
-        }
-
-        if (selectedNumber === null) {
-            messageEl.innerHTML = '🐣 first tap a number (6–10) on the left!';
-            return;
-        }
-
-        if (matches[selectedNumber]) {
-            // this shouldn't happen because we prevent selecting matched numbers, but double-check
-            selectedNumber = null;
-            updateMessage();
-            return;
-        }
-
-        // check match
-        if (qty === selectedNumber) {
-            // correct!
-            matches[selectedNumber] = true;
-
-            // update styles
-            const leftCard = numberElements.get(selectedNumber);
-            const rightCard = quantityElements.get(selectedNumber); // by value (unique)
-            if (leftCard) leftCard.classList.add('matched-num');
-            if (rightCard) rightCard.classList.add('matched-animal');
-
-            messageEl.innerHTML = `✔️ perfect! ${selectedNumber} = ${selectedNumber} animal friends 🐶🐱`;
-            selectedNumber = null;
-
-            if (allMatched()) {
-                messageEl.innerHTML = '🏆🏆 YOU DID IT! 6 7 8 9 10 all matched! 🏆🏆';
-            } else {
-                updateMessage(); // will show "pick a number"
-            }
-        } else {
-            messageEl.innerHTML = `🙈 oops! you tapped ${qty} faces, but selected ${selectedNumber}. try again!`;
-            // keep selectedNumber unchanged, they can try another group
-        }
-    });
-
-    // reset everything
-    function resetGame() {
-        matches = {};
-        selectedNumber = null;
-        renderGame();
-        messageEl.innerHTML = '🔄 new round! tap a number 6–10, then find its face group.';
-    }
-
-    resetBtn.addEventListener('click', resetGame);
-
-    // initial render
-    renderGame();
-
-})();
-</script>
-
-<!-- explanation: each "animal face" acts as an image. you can replace them with real pngs by swapping .animal-face inner content -->
-
-<br>
-<br>
-
+    <div id="star-overlay">
+        <div class="big-star">⭐</div>
+        <h1 style="color: #ff4500; font-size: 40px;">ANG GALING!</h1>
+        <p style="font-size: 20px;">Natapos mo na ang 6 hanggang 10!</p>
+        <button class="next-btn" onclick="window.location.href='6c.html'">Next Game ➔</button>
+        <p onclick="location.reload()" style="cursor:pointer; text-decoration: underline; margin-top: 20px; color: #666;">Play Again</p>
+    </div>
 <center>
-<table>
-<tr>
-	<td>
-	 <center><a href="index.html"><img src="home.png" width="50" length="50"></a></center>
-	</td>
-
-	<td>
-	 <center><a href="6c.html"><img src="np.png" width="150" length="200"></a></center>
-	</td>
-</tr>
-</table>
+    <table class="nav-table">
+        <tr>
+            <td align="center"><a href="index.html"><img src="home.png" width="45"></a></td>
+            <td align="center"><a href="6c.html"><img src="np.png" width="100"></a></td>
+        </tr>
+    </table>
 </center>
+<script>
+    const NUMBER_VALUES = [6, 7, 8, 9, 10];
+    let selectedNumber = null;
+    let matches = {};
 
+    // Sound generator
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playSound(isCorrect) {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = isCorrect ? 'sine' : 'square';
+        osc.frequency.setValueAtTime(isCorrect ? 600 : 150, audioCtx.currentTime);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        osc.start();
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.15);
+        osc.stop(audioCtx.currentTime + 0.15);
+    }
 
+    function render() {
+        const numPanel = document.getElementById('numbersPanel');
+        const qPanel = document.getElementById('quantityPanel');
+        numPanel.innerHTML = '';
+        qPanel.innerHTML = '';
 
-<hr width=100% size="5">
+        NUMBER_VALUES.forEach(num => {
+            const card = document.createElement('div');
+            card.className = 'num-card' + (matches[num] ? ' matched-num' : '');
+            card.innerText = num;
+            card.onclick = () => {
+                selectedNumber = num;
+                document.getElementById('messageDisplay').innerText = "Hanapin ang " + num + " na hayop!";
+            };
+            numPanel.appendChild(card);
+        });
 
-<center><a name="DOWN"></center>
-<center><a href="#top">Page Up</center>
+        // Use a fixed shuffle per render to avoid jumping
+        if(!window.shuffledList || Object.keys(matches).length === 0) {
+            window.shuffledList = [...NUMBER_VALUES].sort(() => Math.random() - 0.5);
+        }
 
+        window.shuffledList.forEach(num => {
+            const card = document.createElement('div');
+            card.className = 'animal-card' + (matches[num] ? ' matched-animal' : '');
+            for(let i=0; i<num; i++) {
+                const face = document.createElement('div');
+                face.className = 'animal-face';
+                if(i % 2 === 0) face.style.background = "#b3ddf2";
+                if(i % 3 === 0) face.style.background = "#f8b88b";
+                card.appendChild(face);
+            }
+            card.onclick = () => {
+                if(!matches[num] && selectedNumber) {
+                    if(selectedNumber === num) {
+                        matches[num] = true;
+                        selectedNumber = null;
+                        playSound(true);
+                        document.getElementById('messageDisplay').innerText = "Tama! Ang galing! 🏆";
+                        render();
+                        if(Object.keys(matches).length === 5) {
+                            setTimeout(() => { document.getElementById('star-overlay').style.display = 'flex'; }, 500);
+                        }
+                    } else {
+                        playSound(false);
+                        document.getElementById('messageDisplay').innerText = "Mali, bilangin muli! 🙈";
+                    }
+                } else if (!selectedNumber) {
+                    document.getElementById('messageDisplay').innerText = "Pindutin muna ang numero!";
+                }
+            };
+            qPanel.appendChild(card);
+        });
+    }
+
+    render();
+</script>
 </body>
 </html>

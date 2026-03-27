@@ -1,561 +1,309 @@
 <!DOCTYPE html>
-<html>
-<body background="6back.jpg">
-
-<center><a name="top"></center>
-
-<form>
-
-
-	<table>
-	<tr>
-		<td>
-		<a href="6.html"><img src="1NUM.png" width="250" length="600"></a>
-
-		</td>
-	
-	</tr>
-	</table>
-
- 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>kindergarten · 11 to 15 · sprinkle counting</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cupcake Match 11-15</title>
     <style>
         * {
             box-sizing: border-box;
             user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             margin: 0;
             min-height: 100vh;
-            background: #fde2c4;  /* warm bakery background */
+            background: #fde2c4;
             background-image: repeating-linear-gradient(45deg, #ffd7a7 0px, #ffd7a7 20px, #ffeac5 20px, #ffeac5 40px);
-            font-family: 'Comic Neue', 'Segoe UI', 'Fredoka One', 'Chalkboard SE', cursive, sans-serif;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 16px;
+            padding: 10px;
         }
 
-        .cupcake-world {
-            max-width: 1100px;
+        .header-img {
+            max-width: 180px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .game-box {
+            max-width: 550px;
             width: 100%;
             background: #fff0da;
-            border-radius: 90px 90px 60px 60px;
-            border: 10px solid #f2b279;
-            box-shadow: 0 20px 0 #cb7f4a, 0 30px 25px rgba(120, 68, 20, 0.3);
-            padding: 25px 15px 35px 15px;
+            border-radius: 40px;
+            border: 6px solid #f2b279;
+            box-shadow: 0 10px 0 #cb7f4a;
+            padding: 15px;
+            position: relative;
         }
 
-        .header {
+        .title {
             text-align: center;
-        }
-
-        .header h1 {
-            font-size: 3.8rem;
-            margin: 0 0 5px;
+            font-size: 1.4rem;
             color: #633c1e;
-            text-shadow: 5px 5px 0 #fccc8e, 7px 7px 0 #b46f3a;
-            letter-spacing: 3px;
-            word-break: break-word;
+            margin: 0 0 10px;
         }
 
-        .header p {
-            font-size: 1.9rem;
+        .subhead {
+            display: block;
+            text-align: center;
+            font-size: 0.85rem;
             background: #fee1b9;
-            display: inline-block;
-            padding: 12px 40px;
+            padding: 5px 15px;
             border-radius: 50px;
-            border: 5px solid #cc8b5a;
-            margin: 0 0 25px;
+            margin-bottom: 15px;
+            border: 2px solid #cc8b5a;
             color: #452812;
-            font-weight: 600;
-            box-shadow: inset 0 4px 8px #fff2c1;
         }
 
-        .game-layout {
+        .board {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 25px;
+            gap: 10px;
             background: #fadbb1;
-            border-radius: 80px;
-            padding: 40px 20px;
-            border: 6px dashed #c0874e;
-            box-shadow: inset 0 0 0 10px #fff7df;
+            border-radius: 20px;
+            padding: 10px;
+            border: 3px dashed #c0874e;
         }
 
         .panel {
-            flex: 1 1 300px;
-            min-width: 280px;
+            flex: 1;
             background: #fffbf0;
-            border-radius: 70px;
-            padding: 30px 15px;
-            border: 5px solid #dfa86a;
-            box-shadow: 0 12px 0 #b57940, 0 12px 18px -5px #8c5f31;
+            border-radius: 15px;
+            padding: 10px 5px;
+            border: 2px solid #dfa86a;
         }
 
         .panel h2 {
+            font-size: 0.9rem;
             text-align: center;
-            font-size: 2.6rem;
+            margin: 0 0 10px;
             background: #ffd89a;
-            border-radius: 50px;
-            padding: 10px 20px;
-            display: inline-block;
-            width: auto;
-            margin: -10px auto 20px auto;
-            border: 5px solid #b5793b;
+            border-radius: 10px;
             color: #3f2e16;
         }
 
-        /* numbers 11–15 (left) – different style: rounded rectangles */
-        .numbers-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-        }
-
-        .number-block {
+        .num-card {
             background: #ffb26b;
-            border: 7px solid #b05f26;
-            border-radius: 50px;
-            padding: 20px 5px;
+            border: 3px solid #b05f26;
+            border-radius: 20px;
+            padding: 8px 0;
             text-align: center;
-            font-size: 5rem;
-            font-weight: 800;
-            color: #2d2d0a;
-            line-height: 1;
-            box-shadow: 0 10px 0 #8e4d23, 0 12px 18px rgba(0,0,0,0.2);
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 0 #8e4d23;
             cursor: pointer;
-            transition: 0.05s ease;
-            text-shadow: 3px 3px 0 #ffdbb5;
-        }
-
-        .number-block:active {
-            transform: translateY(8px);
-            box-shadow: 0 4px 0 #8e4d23, 0 7px 12px rgba(0,0,0,0.15);
-        }
-
-        /* right side – cupcake tray (different concept) */
-        .cupcake-area {
-            display: flex;
-            flex-direction: column;
-            gap: 22px;
         }
 
         .cupcake-card {
             background: #f8cfbc;
-            border: 6px solid #b3544b;
-            border-radius: 80px;
-            padding: 20px 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 10px 0 #943e36, 0 12px 18px rgba(0,0,0,0.2);
-            cursor: pointer;
-            transition: 0.05s;
-        }
-
-        .cupcake-card:active {
-            transform: translateY(8px);
-            box-shadow: 0 3px 0 #943e36, 0 7px 12px rgba(0,0,0,0.1);
-        }
-
-        /* cupcake row — sprinkles as images */
-        .cupcake-row {
+            border: 3px solid #b3544b;
+            border-radius: 20px;
+            padding: 8px 4px;
+            margin-bottom: 10px;
+            min-height: 80px;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             align-items: center;
-            gap: 15px 25px;
-            padding: 5px 0;
+            gap: 3px;
+            box-shadow: 0 4px 0 #943e36;
+            cursor: pointer;
         }
 
+        /* Tiny CSS Cupcakes */
         .cupcake {
-            width: 70px;
-            height: 70px;
-            background: #f7c1a4;  /* cake base */
-            border-radius: 50% 50% 45% 45%;
-            border: 5px solid #ab5f3f;
-            box-shadow: 0 7px 0 #83492f, 0 8px 8px #693d28;
+            width: 22px;
+            height: 22px;
+            background: #f7c1a4;
+            border-radius: 4px 4px 10px 10px;
+            border: 1px solid #ab5f3f;
             position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+        }
+        .cupcake::before {
+            content: '';
+            position: absolute;
+            top: -10px; left: -1px;
+            width: 22px; height: 12px;
+            background: #ffb3c6; /* Frosting */
+            border-radius: 10px 10px 0 0;
+            border: 1px solid #bc5f7a;
         }
 
-        .frosting {
-            width: 70px;
-            height: 30px;
-            background: #ffb3c6;  /* pink frosting */
-            border-radius: 50% 50% 30% 30%;
-            border: 4px solid #bc5f7a;
-            margin-top: -25px;
-            box-shadow: 0 4px 0 #a1455e;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
+        .matched-num, .matched-cupcake {
+            background: #c8e6b5 !important;
+            border-color: #307530 !important;
+            box-shadow: none !important;
+            opacity: 0.5;
+            transform: scale(0.9);
+            pointer-events: none;
         }
 
-        .sprinkle {
-            width: 8px;
-            height: 16px;
-            background: #fced49;  /* yellow sprinkle */
-            border-radius: 20%;
-            border: 2px solid #c9a43b;
-            transform: rotate(15deg);
-            box-shadow: 0 2px 0 #a07f27;
-        }
-
-        .sprinkle:nth-child(2) {
-            background: #6ecf6e;
-            border-color: #2d852d;
-            transform: rotate(-10deg);
-        }
-        .sprinkle:nth-child(3) {
-            background: #ff8a5c;
-            border-color: #b1451a;
-            transform: rotate(25deg);
-        }
-
-        .cherry {
-            width: 18px;
-            height: 18px;
-            background: #d63434;
-            border-radius: 50%;
-            border: 3px solid #961b1b;
-            margin-top: -5px;
-            box-shadow: 0 3px 0 #631212;
-        }
-
-        /* small text hint (optional) */
-        .cupcake-hint {
-            font-size: 1rem;
-            color: #773d2e;
-            opacity: 0.7;
-        }
-
-        /* matched style */
-        .matched-number {
-            background: #b1d8a8;
-            border-color: #307530;
-            box-shadow: 0 10px 0 #1c5e1c;
-        }
-
-        .matched-cupcake {
-            background: #ddc6b0;
-            border-color: #307530;
-            border-width: 6px;
-            box-shadow: 0 10px 0 #1c5e1c;
-        }
-
-        /* feedback area */
-        .message-box {
+        .feedback {
             text-align: center;
-            margin: 35px 0 20px;
-            font-size: 2.2rem;
+            margin: 15px 0;
+            font-size: 1rem;
             background: #fff3c9;
-            border-radius: 70px;
-            padding: 20px 25px;
-            border: 6px solid #cc9f64;
-            color: #384523;
-            font-weight: 600;
-            min-height: 6rem;
-            box-shadow: inset 0 5px 12px #ffefc7;
+            border-radius: 15px;
+            padding: 10px;
+            border: 3px solid #cc9f64;
+            min-height: 50px;
         }
 
-        .reset-btn {
-            background: #ffb252;
+        /* Congratulations Star Screen */
+        #star-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.96);
+            z-index: 1000;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .big-star {
+            font-size: 120px;
+            color: #FFD700;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            to { transform: rotate(360deg) scale(1); }
+        }
+
+        .next-btn {
+            background: #FF9800;
+            color: white;
             border: none;
-            font-size: 2.5rem;
-            border-radius: 60px;
-            padding: 12px 50px;
-            font-weight: bold;
-            color: #2d311b;
-            border-bottom: 12px solid #9b632e;
+            padding: 15px 40px;
+            font-size: 24px;
+            border-radius: 50px;
             cursor: pointer;
-            transition: 0.07s;
-            box-shadow: 0 10px 0 #8b582b;
+            box-shadow: 0 6px #e68a00;
+            margin-top: 20px;
             font-family: inherit;
         }
 
-        .reset-btn:active {
-            transform: translateY(10px);
-            border-bottom-width: 4px;
-            box-shadow: 0 3px 0 #8b582b;
-        }
-
-        .footer {
-            display: flex;
-            justify-content: center;
-        }
-
-        @media (max-width: 650px) {
-            .cupcake { width: 55px; height: 55px; }
-            .frosting { width: 55px; }
-        }
+        .nav-table { width: 100%; margin-top: 15px; }
     </style>
 </head>
 <body>
-<div class="cupcake-world">
-    <div class="header">
-        <h1>🧁 11 • 12 • 13 • 14 • 15 🧁</h1>
-        <p>count sprinkles & match the number</p>
-    </div>
 
-    <div class="game-layout">
-        <!-- LEFT: numbers 11–15 -->
-        <div class="panel">
-            <h2>🔢 big numbers</h2>
-            <div class="numbers-grid" id="leftNumbers"></div>
+    <img src="1NUM.png" class="header-img" alt="Numbers">
+
+    <div class="game-box">
+        <div class="title">🧁 11 • 12 • 13 • 14 • 15 🧁</div>
+        <span class="subhead">Tap number → Tap cupcakes</span>
+
+        <div class="board">
+            <div class="panel">
+                <h2>Numbers</h2>
+                <div id="numbersPanel"></div>
+            </div>
+            <div class="panel">
+                <h2>Cupcakes</h2>
+                <div id="quantityPanel"></div>
+            </div>
         </div>
 
-        <!-- RIGHT: cupcakes with sprinkles (quantity) -->
-        <div class="panel">
-            <h2>🧁 cupcake tray</h2>
-            <div class="cupcake-area" id="rightCupcakes"></div>
-        </div>
+        <div id="messageDisplay" class="feedback">Ready to bake?</div>
     </div>
 
-    <div class="message-box" id="gameMessage">✨ tap a number, then count sprinkles on a cupcake group!</div>
-    <div class="footer"><button class="reset-btn" id="resetGame">🔄 fresh cupcakes</button></div>
-</div>
-
-<script>
-(function() {
-    // numbers 11 through 15 (the new challenge)
-    const NUMBER_VALUES = [11, 12, 13, 14, 15];
-
-    const leftPanel = document.getElementById('leftNumbers');
-    const rightPanel = document.getElementById('rightCupcakes');
-    const messageEl = document.getElementById('gameMessage');
-    const resetBtn = document.getElementById('resetGame');
-
-    // state
-    let selectedNumber = null;            // 11..15
-    let matches = {};                     // e.g. {11: true, 12: true}
-    let numberElements = new Map();        // num -> DOM (left)
-    let cupcakeElements = new Map();       // num -> DOM (right)
-
-    // ----- create a cupcake card (quantity side) -----
-    function createCupcakeCard(num) {
-        const card = document.createElement('div');
-        card.className = 'cupcake-card';
-        card.dataset.quantity = num;
-
-        const cupcakeRow = document.createElement('div');
-        cupcakeRow.className = 'cupcake-row';
-
-        for (let i = 0; i < num; i++) {
-            const cupcake = document.createElement('div');
-            cupcake.className = 'cupcake';
-
-            // frosting
-            const frosting = document.createElement('div');
-            frosting.className = 'frosting';
-            // add some sprinkles (2-3 per cupcake for cuteness)
-            for (let s = 0; s < 3; s++) {
-                const sprinkle = document.createElement('div');
-                sprinkle.className = 'sprinkle';
-                frosting.appendChild(sprinkle);
-            }
-            // cherry on top
-            const cherry = document.createElement('div');
-            cherry.className = 'cherry';
-
-            cupcake.appendChild(frosting);
-            cupcake.appendChild(cherry);
-            cupcakeRow.appendChild(cupcake);
-        }
-
-        card.appendChild(cupcakeRow);
-
-        // tiny hint: show number of cupcakes (but they can count)
-        const hint = document.createElement('div');
-        hint.className = 'cupcake-hint';
-        hint.textContent = '🧁 '.repeat(num) + ' = ' + num;
-        card.appendChild(hint);
-
-        return card;
-    }
-
-    // ----- create number card (left) -----
-    function createNumberCard(num) {
-        const card = document.createElement('div');
-        card.className = 'number-block';
-        card.dataset.number = num;
-        card.textContent = num;
-        return card;
-    }
-
-    // ----- render everything with shuffled right side -----
-    function renderGame() {
-        leftPanel.innerHTML = '';
-        rightPanel.innerHTML = '';
-        numberElements.clear();
-        cupcakeElements.clear();
-
-        // left side: show numbers in ascending order
-        const leftNumbers = [...NUMBER_VALUES].sort((a, b) => a - b);  // 11,12,13,14,15
-
-        // right side: shuffle for playful mismatch
-        const rightQuantities = [...NUMBER_VALUES].sort(() => Math.random() - 0.5);
-
-        // create left cards
-        for (let num of leftNumbers) {
-            const card = createNumberCard(num);
-            if (matches[num]) {
-                card.classList.add('matched-number');
-            }
-            leftPanel.appendChild(card);
-            numberElements.set(num, card);
-        }
-
-        // create right (cupcake) cards
-        for (let num of rightQuantities) {
-            const card = createCupcakeCard(num);
-            card.dataset.quantity = num;
-            if (matches[num]) {
-                card.classList.add('matched-cupcake');
-            }
-            rightPanel.appendChild(card);
-            cupcakeElements.set(num, card);
-        }
-
-        selectedNumber = null;
-        updateMessage();
-    }
-
-    // ----- helper: check if all matched -----
-    function allDone() {
-        return NUMBER_VALUES.every(n => matches[n] === true);
-    }
-
-    // ----- update message based on state -----
-    function updateMessage() {
-        if (allDone()) {
-            messageEl.innerHTML = '🎂🎊 CONGRATULATIONS! 11 to 15 all matched! 🎊🎂';
-        } else if (selectedNumber !== null) {
-            messageEl.innerHTML = `👉 selected number ${selectedNumber} — now find the tray with ${selectedNumber} cupcakes`;
-        } else {
-            messageEl.innerHTML = '👆 tap a number (11–15), then tap the matching cupcake group!';
-        }
-    }
-
-    // ----- EVENT LISTENERS (delegation) -----
-    leftPanel.addEventListener('click', (e) => {
-        const numBlock = e.target.closest('.number-block');
-        if (!numBlock) return;
-
-        const num = parseInt(numBlock.dataset.number);
-
-        if (matches[num]) {
-            messageEl.innerHTML = `🌟 number ${num} is already matched! (nice work)`;
-            return;
-        }
-
-        selectedNumber = num;
-        updateMessage();
-    });
-
-    rightPanel.addEventListener('click', (e) => {
-        const cupcakeCard = e.target.closest('.cupcake-card');
-        if (!cupcakeCard) return;
-
-        const qty = parseInt(cupcakeCard.dataset.quantity);
-
-        if (matches[qty]) {
-            messageEl.innerHTML = `🍰 the ${qty}‑cupcake tray is already matched!`;
-            return;
-        }
-
-        if (selectedNumber === null) {
-            messageEl.innerHTML = '🧁 first tap a number on the left (11 to 15)!';
-            return;
-        }
-
-        if (matches[selectedNumber]) {
-            // safety: shouldn't happen because matched numbers aren't selectable, but just in case
-            selectedNumber = null;
-            updateMessage();
-            return;
-        }
-
-        // check match
-        if (qty === selectedNumber) {
-            // correct!
-            matches[selectedNumber] = true;
-
-            // update visuals
-            const leftCard = numberElements.get(selectedNumber);
-            const rightCard = cupcakeElements.get(selectedNumber); // by number
-            if (leftCard) leftCard.classList.add('matched-number');
-            if (rightCard) rightCard.classList.add('matched-cupcake');
-
-            messageEl.innerHTML = `✔️ yum! ${selectedNumber} = ${selectedNumber} cupcakes with sprinkles 🎉`;
-            selectedNumber = null;
-
-            if (allDone()) {
-                messageEl.innerHTML = '🏁🏁 PERFECT! 11 12 13 14 15 all matched! 🏁🏁';
-            } else {
-                updateMessage(); // "tap a number..."
-            }
-        } else {
-            messageEl.innerHTML = `😕 oops! you tapped ${qty} cupcakes, but number is ${selectedNumber}. try another tray!`;
-            // keep selectedNumber unchanged
-        }
-    });
-
-    // ----- reset -----
-    function resetGame() {
-        matches = {};
-        selectedNumber = null;
-        renderGame();
-        messageEl.innerHTML = '🔄 fresh cupcakes! tap a number 11–15, then match the tray.';
-    }
-
-    resetBtn.addEventListener('click', resetGame);
-
-    // initial render
-    renderGame();
-})();
-</script>
-
-<!-- concept: instead of dots or animal faces, each "cupcake" is a little image built with CSS.
-     Children count the cupcakes (11 to 15) and match with the numeral. -->
-
-
-<br>
-<br>
-
+    <div id="star-overlay">
+        <div class="big-star">⭐</div>
+        <h1 style="color: #ff4500; font-size: 40px;">ANG GALING!</h1>
+        <p style="font-size: 20px;">Natapos mo na ang 11 hanggang 15!</p>
+        <button class="next-btn" onclick="window.location.href='6d.html'">Next Game ➔</button>
+        <p onclick="location.reload()" style="cursor:pointer; text-decoration: underline; margin-top: 20px; color: #666;">Play Again</p>
+    </div>
 <center>
-<table>
-<tr>
-	<td>
-	 <center><a href="index.html"><img src="home.png" width="50" length="50"></a></center>
-	</td>
-
-	<td>
-	 <center><a href="6d.html"><img src="np.png" width="150" length="200"></a></center>
-	</td>
-</tr>
-</table>
+    <table class="nav-table">
+        <tr>
+            <td align="center"><a href="index.html"><img src="home.png" width="45"></a></td>
+            <td align="center"><a href="6d.html"><img src="np.png" width="100"></a></td>
+        </tr>
+    </table>
 </center>
+<script>
+    const NUMBER_VALUES = [11, 12, 13, 14, 15];
+    let selectedNumber = null;
+    let matches = {};
 
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playSound(isCorrect) {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = isCorrect ? 'sine' : 'square';
+        osc.frequency.setValueAtTime(isCorrect ? 600 : 150, audioCtx.currentTime);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        osc.start();
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.15);
+        osc.stop(audioCtx.currentTime + 0.15);
+    }
 
+    function render() {
+        const numPanel = document.getElementById('numbersPanel');
+        const qPanel = document.getElementById('quantityPanel');
+        numPanel.innerHTML = '';
+        qPanel.innerHTML = '';
 
-<hr width=100% size="5">
+        NUMBER_VALUES.forEach(num => {
+            const card = document.createElement('div');
+            card.className = 'num-card' + (matches[num] ? ' matched-number' : '');
+            card.innerText = num;
+            card.onclick = () => {
+                selectedNumber = num;
+                document.getElementById('messageDisplay').innerText = "Hanapin ang " + num + " na cupcake!";
+            };
+            numPanel.appendChild(card);
+        });
 
-<center><a name="DOWN"></center>
-<center><a href="#top">Page Up</center>
+        if(!window.shuffledList || Object.keys(matches).length === 0) {
+            window.shuffledList = [...NUMBER_VALUES].sort(() => Math.random() - 0.5);
+        }
 
+        window.shuffledList.forEach(num => {
+            const card = document.createElement('div');
+            card.className = 'cupcake-card' + (matches[num] ? ' matched-cupcake' : '');
+            for(let i=0; i<num; i++) {
+                const cupcake = document.createElement('div');
+                cupcake.className = 'cupcake';
+                card.appendChild(cupcake);
+            }
+            card.onclick = () => {
+                if(!matches[num] && selectedNumber) {
+                    if(selectedNumber === num) {
+                        matches[num] = true;
+                        selectedNumber = null;
+                        playSound(true);
+                        document.getElementById('messageDisplay').innerText = "Yum! Tama ka! 🧁";
+                        render();
+                        if(Object.keys(matches).length === 5) {
+                            setTimeout(() => { document.getElementById('star-overlay').style.display = 'flex'; }, 500);
+                        }
+                    } else {
+                        playSound(false);
+                        document.getElementById('messageDisplay').innerText = "Subukan muli ang pagbilang! 🧐";
+                    }
+                } else if (!selectedNumber) {
+                    document.getElementById('messageDisplay').innerText = "Pindutin muna ang numero!";
+                }
+            };
+            qPanel.appendChild(card);
+        });
+    }
+
+    render();
+</script>
 </body>
 </html>
