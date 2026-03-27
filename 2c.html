@@ -1,352 +1,222 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🍭 Shape Monster Cafe</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            user-select: none;
-            margin: 0;
-            padding: 0;
-            -webkit-tap-highlight-color: transparent;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monster Cafe Drag Game</title>
 
-        body {
-            background: #3b2b22;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Comic Neue', 'Chalkboard SE', cursive, sans-serif;
-            padding: 10px;
-        }
+<style>
+body {
+    font-family: 'Comic Neue', cursive;
+    background: #3b2b22;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
 
-        .game-card {
-            max-width: 800px;
-            width: 100%;
-            background: #fdeacb;
-            border-radius: 40px;
-            border: 6px solid #cf9f6e;
-            box-shadow: 0 10px 0 #9b6e46;
-            padding: 15px;
-        }
+.game-card {
+    background: #fdeacb;
+    padding: 15px;
+    border-radius: 25px;
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+}
 
-        /* Monster Header */
-        .monster-cafe {
-            background: #ffe2b0;
-            border-radius: 30px;
-            padding: 15px;
-            border: 4px solid #ca8953;
-            margin-bottom: 15px;
-        }
+/* MONSTER */
+.monster {
+    font-size: 60px;
+}
 
-        .title-row h2 {
-            font-size: 1.5rem;
-            color: #4b2e15;
-            text-align: center;
-            margin-bottom: 10px;
-        }
+.mouth {
+    margin: 10px auto;
+    width: 120px;
+    height: 60px;
+    background: #000;
+    border-radius: 0 0 60px 60px;
+    position: relative;
+}
 
-        .monster-face {
-            background: #b5d989;
-            border-radius: 25px;
-            padding: 10px;
-            border: 5px solid #6d8c4a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            gap: 10px;
-        }
+/* ITEMS */
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
 
-        .eyes-nose { font-size: 2.5rem; }
+.item {
+    background: #fee1b5;
+    padding: 20px;
+    border-radius: 20px;
+    font-size: 1.2rem;
+    cursor: grab;
+    touch-action: none;
+}
 
-        .monster-speech {
-            background: white;
-            border-radius: 15px;
-            padding: 10px 15px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #3b2b1d;
-            border: 3px solid #fbbc5e;
-            text-align: center;
-            width: 100%;
-        }
+.dragging {
+    opacity: 0.5;
+}
 
-        /* Order Zone */
-        .order-zone {
-            background: #ecdbb9;
-            border-radius: 25px;
-            padding: 15px;
-            margin-bottom: 15px;
-            border: 4px solid #b18d61;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
+/* FEEDBACK */
+.correct { background: #a5d6a7; }
+.wrong { background: #ef9a9a; }
 
-        .order-badge {
-            background: #fceda6;
-            border-radius: 20px;
-            padding: 5px 15px;
-            font-size: 1rem;
-            border: 3px solid #eaac6f;
-            font-weight: bold;
-        }
-
-        .shape-on-plate {
-            width: 80px;
-            height: 80px;
-            background: #ffeeaf;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 5px solid #f7b05e;
-        }
-
-        .shape-on-plate svg { width: 60px; height: 60px; }
-
-        /* MENU GRID - Responsive 2 columns on mobile, 3 on desktop */
-        .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-
-        @media (min-width: 600px) {
-            .menu-grid { grid-template-columns: repeat(3, 1fr); }
-            .title-row h2 { font-size: 2rem; }
-            .monster-speech { font-size: 1.5rem; }
-            .shape-on-plate { width: 110px; height: 110px; }
-            .shape-on-plate svg { width: 80px; height: 80px; }
-        }
-
-        .menu-item {
-            background: #fee1b5;
-            border: 4px solid #f09d4c;
-            border-radius: 25px;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-            cursor: pointer;
-            box-shadow: 0 5px 0 #bc742f;
-        }
-
-        .menu-item:active {
-            transform: translateY(3px);
-            box-shadow: 0 2px 0 #bc742f;
-        }
-
-        .menu-item svg { width: 50px; height: 50px; }
-
-        .menu-label {
-            font-size: 0.9rem;
-            background: #ffedc5;
-            padding: 2px 8px;
-            border-radius: 10px;
-            border: 2px solid #dc8e41;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .disabled {
-            opacity: 0.5;
-            pointer-events: none;
-            filter: grayscale(0.5);
-        }
-
-        /* Feedback */
-        .monster-feedback {
-            background: #eace9b;
-            border-radius: 20px;
-            padding: 15px;
-            text-align: center;
-            font-size: 1.1rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-            border: 4px solid #c18d50;
-        }
-
-        .next-snack-btn {
-            width: 100%;
-            background: #a9d4b0;
-            border: 5px solid #5f9652;
-            font-size: 1.3rem;
-            font-weight: bold;
-            padding: 12px;
-            border-radius: 20px;
-            color: #25512e;
-            box-shadow: 0 6px 0 #3f7841;
-            cursor: pointer;
-            margin-bottom: 10px;
-        }
-
-        .next-snack-btn:disabled { opacity: 0.4; box-shadow: none; transform: translateY(4px); }
-
-        .score-panel {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 1rem;
-            font-weight: bold;
-        }
-
-        .reset-cafe {
-            color: #9f5922;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-
-        /* SVG Colors */
-        .shape-fill-pink { fill: #f7a6b4; }
-        .shape-fill-mint { fill: #a2d9ce; }
-        .shape-fill-lavender { fill: #c9b2e6; }
-        .shape-fill-peach { fill: #faca9b; }
-        .shape-fill-aqua { fill: #93d7e7; }
-        .shape-fill-coral { fill: #fdaf8d; }
-        .shape-stroke-dark { stroke: #3f280f; stroke-width: 5; fill-opacity: 0.9; }
-    </style>
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+}
+</style>
 </head>
+
 <body>
 
 <div class="game-card">
-    <div class="monster-cafe">
-        <div class="title-row">
-            <h2>👾 MONSTER CAFE</h2>
-        </div>
-        <div class="monster-face">
-            <div class="eyes-nose" id="monsterEmoji">👀👃👀</div>
-            <div class="monster-speech" id="monsterTalk">Loading...</div>
-        </div>
-    </div>
 
-    <div class="order-zone">
-        <span class="order-badge">TODAY'S SNACK</span>
-        <div class="shape-on-plate" id="orderShapeDisplay"></div>
-    </div>
+    <h2>👾 Monster Cafe</h2>
+    <p id="instruction">Loading...</p>
 
-    <div class="menu-grid" id="menuContainer"></div>
+    <div class="monster">👀</div>
+    <div class="mouth" id="mouth"></div>
 
-    <div class="monster-feedback" id="feedbackArea">
-        <div id="feedbackText">Tap a shape to feed me!</div>
-    </div>
+    <div id="menu" class="menu-grid"></div>
 
-    <button class="next-snack-btn" id="nextSnackBtn" disabled>NEXT SNACK ➔</button>
+    <p id="feedback">Drag to the mouth!</p>
 
-    <div class="score-panel">
-        <span>SCORE: <span id="scoreDisplay">0</span></span>
-        <span class="reset-cafe" id="resetCafeBtn">New Game</span>
-    </div>
+    <button id="next" disabled>Next</button>
+    <p>Score: <span id="score">0</span></p>
+
 </div>
 
 <script>
-    (function() {
-        const menuShapes = [
-            { name: 'circle', label: 'Circle', emoji: '⭕' },
-            { name: 'square', label: 'Square', emoji: '⬜' },
-            { name: 'triangle', label: 'Triangle', emoji: '🔺' },
-            { name: 'rectangle', label: 'Rectangle', emoji: '📏' },
-            { name: 'heart', label: 'Heart', emoji: '❤️' },
-            { name: 'star', label: 'Star', emoji: '⭐' }
-        ];
+const items = [
+    { name: "clock", emoji: "🕒", shape: "circle" },
+    { name: "ball", emoji: "⚽", shape: "circle" },
+    { name: "window", emoji: "🪟", shape: "square" },
+    { name: "box", emoji: "📦", shape: "square" },
+    { name: "triangle", emoji: "🔺", shape: "triangle" },
+    { name: "tent", emoji: "⛺", shape: "triangle" },
+    { name: "star", emoji: "⭐", shape: "star" },
+    { name: "sparkle", emoji: "🌟", shape: "star" }
+];
 
-        const colorClasses = ['shape-fill-pink', 'shape-fill-mint', 'shape-fill-lavender', 'shape-fill-peach', 'shape-fill-aqua', 'shape-fill-coral'];
+const shapes = ["circle","square","triangle","star"];
 
-        function getSvg(shapeName, colorClass) {
-            const s = 'shape-stroke-dark';
-            switch(shapeName) {
-                case 'circle': return `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" class="${colorClass} ${s}" /></svg>`;
-                case 'square': return `<svg viewBox="0 0 100 100"><rect x="20" y="20" width="60" height="60" rx="8" class="${colorClass} ${s}" /></svg>`;
-                case 'triangle': return `<svg viewBox="0 0 100 100"><polygon points="50,13 92,82 8,82" class="${colorClass} ${s}" /></svg>`;
-                case 'rectangle': return `<svg viewBox="0 0 100 100"><rect x="15" y="25" width="70" height="45" rx="8" class="${colorClass} ${s}" /></svg>`;
-                case 'heart': return `<svg viewBox="0 0 100 100"><path d="M50,30 Q40,10 20,20 Q5,35 25,55 Q40,70 50,80 Q60,70 75,55 Q95,35 80,20 Q60,10 50,30 Z" class="${colorClass} ${s}" /></svg>`;
-                case 'star': return `<svg viewBox="0 0 100 100"><polygon points="50,7 64,37 97,40 71,58 81,92 50,73 19,92 29,58 3,40 36,37" class="${colorClass} ${s}" /></svg>`;
-            }
-        }
+let currentShape;
+let score = 0;
+let draggedItem = null;
 
-        let currentOrder = null;
-        let score = 0;
-        let roundDone = false;
+const instruction = document.getElementById("instruction");
+const menu = document.getElementById("menu");
+const mouth = document.getElementById("mouth");
+const feedback = document.getElementById("feedback");
+const nextBtn = document.getElementById("next");
+const scoreText = document.getElementById("score");
 
-        const orderDisp = document.getElementById('orderShapeDisplay');
-        const menuCont = document.getElementById('menuContainer');
-        const monsterTalk = document.getElementById('monsterTalk');
-        const feedbackText = document.getElementById('feedbackText');
-        const nextBtn = document.getElementById('nextSnackBtn');
-        const scoreDisp = document.getElementById('scoreDisplay');
-        const monsterEmoji = document.getElementById('monsterEmoji');
+function startRound(){
+    nextBtn.disabled = true;
 
-        function startRound() {
-            roundDone = false;
-            nextBtn.disabled = true;
-            currentOrder = menuShapes[Math.floor(Math.random() * menuShapes.length)];
-            
-            orderDisp.innerHTML = getSvg(currentOrder.name, 'shape-fill-peach');
-            monsterTalk.innerText = `Feed me a ${currentOrder.label}!`;
-            monsterEmoji.innerText = "👀👃👀";
-            feedbackText.innerText = "Pick a yummy shape!";
-            
-            renderMenu();
-        }
+    const shapeEmoji = {
+        circle:"⚪",
+        square:"🟦",
+        triangle:"🔺",
+        star:"⭐"
+    };
 
-        function renderMenu() {
-            const shuffled = [...menuShapes].sort(() => Math.random() - 0.5);
-            menuCont.innerHTML = shuffled.map((shape, i) => `
-                <div class="menu-item" onclick="handlePick('${shape.name}')" id="item-${shape.name}">
-                    ${getSvg(shape.name, colorClasses[i])}
-                    <span class="menu-label">${shape.emoji} ${shape.label}</span>
-                </div>
-            `).join('');
-        }
+    currentShape = shapes[Math.floor(Math.random()*shapes.length)];
+    instruction.innerHTML = `<div style="font-size:40px">${shapeEmoji[currentShape]}</div>Feed me this shape`;
 
-        window.handlePick = function(shapeName) {
-            if (roundDone) return;
-            roundDone = true;
+    renderMenu();
+}
 
-            const items = document.querySelectorAll('.menu-item');
-            items.forEach(el => el.classList.add('disabled'));
+function renderMenu(){
+    const correct = items.filter(i=>i.shape===currentShape)[0];
+    const wrong = items.filter(i=>i.shape!==currentShape)
+        .sort(()=>Math.random()-0.5)
+        .slice(0,3);
 
-            if (shapeName === currentOrder.name) {
-                score++;
-                scoreDisp.innerText = score;
-                monsterEmoji.innerText = "😋🍴";
-                monsterTalk.innerText = "YUM! Delicious!";
-                feedbackText.innerText = "You found it! 🌟";
-            } else {
-                monsterEmoji.innerText = "🤔❓";
-                monsterTalk.innerText = `That's not a ${currentOrder.label}...`;
-                feedbackText.innerText = "Oops! Try again next time.";
-            }
-            nextBtn.disabled = false;
-        };
+    const choices = [correct, ...wrong].sort(()=>Math.random()-0.5);
 
-        nextBtn.onclick = startRound;
-        document.getElementById('resetCafeBtn').onclick = () => { score = 0; scoreDisp.innerText = "0"; startRound(); };
+    menu.innerHTML = choices.map(i=>`
+        <div class="item" draggable="true" data-shape="${i.shape}">
+            <div style="font-size:40px">${i.emoji}</div>
+            ${i.name}
+        </div>
+    `).join("");
 
-        startRound();
-    })();
+    addDragEvents();
+}
+
+function addDragEvents(){
+    const allItems = document.querySelectorAll(".item");
+
+    allItems.forEach(item=>{
+        item.addEventListener("dragstart", ()=>{
+            draggedItem = item;
+            item.classList.add("dragging");
+        });
+
+        item.addEventListener("dragend", ()=>{
+            item.classList.remove("dragging");
+        });
+
+        // TOUCH support
+        item.addEventListener("touchstart", ()=>{
+            draggedItem = item;
+        });
+    });
+}
+
+// DROP
+mouth.addEventListener("dragover", e=>e.preventDefault());
+
+mouth.addEventListener("drop", ()=>{
+    handleDrop();
+});
+
+// TOUCH DROP
+mouth.addEventListener("touchend", ()=>{
+    if(draggedItem) handleDrop();
+});
+
+function handleDrop(){
+    const shape = draggedItem.getAttribute("data-shape");
+
+    if(shape === currentShape){
+        score++;
+        scoreText.innerText = score;
+        feedback.innerText = "YUM! 😋";
+        mouth.classList.add("correct");
+    } else {
+        feedback.innerText = "Oops! 😢";
+        mouth.classList.add("wrong");
+    }
+
+    nextBtn.disabled = false;
+    draggedItem = null;
+}
+
+nextBtn.onclick = ()=>{
+    mouth.classList.remove("correct","wrong");
+    startRound();
+};
+
+startRound();
 </script>
+
+
 <br>
 <br>
 <center>
 <table>
-<tr>
-	<td>
-	<a href="2.html"><img src="1sha.png" width="250" length="600"></a>
-	</td>
-</tr>
+
 
 <tr>
 	<td>
-	 <center><a href="2c1.html"><img src="np.png" width="150" length="200"></a></center>
+	 <center><a href="2c1.html"><img src="np.png" width="75" length="100"></a></center>
 	</td>
+</tr>
+<tr>
 
 	<td>
 	 <center><a href="index.html"><img src="home.png" width="50" length="50"></a></center>
