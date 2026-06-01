@@ -65,14 +65,14 @@ h1{
     height:100px;
 }
 
-.triangle{
-    width:0;
-    height:0;
-    border-left:60px solid transparent;
-    border-right:60px solid transparent;
-    border-bottom:120px solid #6c5ce7;
+.triangle {
+    width: 0 !important;   /* !important ensures it overrides the .shape 120px */
+    height: 0 !important;
+    background: transparent !important; /* Removes the background color if any */
+    border-left: 60px solid transparent;
+    border-right: 60px solid transparent;
+    border-bottom: 120px solid #6c5ce7;
 }
-
 .star{
     font-size:110px;
     color:#ff9f43;
@@ -103,10 +103,12 @@ h1{
         height:80px;
     }
 
-    .triangle{
-        border-left:45px solid transparent;
-        border-right:45px solid transparent;
-        border-bottom:90px solid #6c5ce7;
+    .triangle {
+        width: 0 !important;
+        height: 0 !important;
+        border-left: 45px solid transparent;
+        border-right: 45px solid transparent;
+        border-bottom: 90px solid #6c5ce7;
     }
 
     .star{
