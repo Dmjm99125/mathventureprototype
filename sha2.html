@@ -3,331 +3,271 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Shape Wizard Adventure</title>
+    <title>Hungry Dragon Shapes</title>
     <style>
         :root {
             --jungle-green: #2ecc71;
-            --wizard-purple: #9b59b6;
-            --gold: #f1c40f;
             --boss-red: #e74c3c;
+            --gold: #f1c40f;
+            --wizard-purple: #9b59b6;
         }
 
         body {
             margin: 0; background: #1a1a1a;
             font-family: 'Arial', sans-serif;
-            display: flex; justify-content: center; align-items: center;
-            height: 100vh; overflow: hidden; touch-action: manipulation;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; overflow-x: hidden; touch-action: manipulation;
+            color: white;
         }
 
         #game-container {
-            position: relative; width: 100%; max-width: 800px;
-            aspect-ratio: 16 / 9; background: var(--jungle-green);
-            border: 8px solid #34495e; border-radius: 15px;
-            overflow: hidden; transition: background 0.8s;
+            position: relative; 
+            width: 95%; 
+            max-width: 500px; 
+            height: 440px; 
+            background: var(--jungle-green);
+            border: 6px solid #34495e; border-radius: 15px;
+            margin-top: 20px; overflow: hidden;
         }
 
-        /* --- ANIMATIONS --- */
-        .boss-emoji { font-size: 7rem; margin: 5px; animation: bossFloat 2s infinite ease-in-out; }
-        @keyframes bossFloat {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(5deg); }
-        }
-        
-        .shake { animation: shake 0.2s infinite; }
-        @keyframes shake {
-            0% { transform: translate(1px, 1px); }
-            50% { transform: translate(-2px, -1px); }
-            100% { transform: translate(1px, 1px); }
+        .screen {
+            position: absolute; width: 100%; height: 100%;
+            display: none; flex-direction: column;
+            justify-content: center; align-items: center;
+            text-align: center; padding: 20px; box-sizing: border-box;
         }
 
-        .bg-obj { position: absolute; font-size: 2rem; opacity: 0.4; animation: move linear infinite; pointer-events: none; }
-        @keyframes move { from { transform: translateX(-100px); } to { transform: translateX(900px); } }
+        .active { display: flex !important; }
 
-        .floating-star { position: absolute; color: var(--gold); font-weight: bold; font-size: 2rem; pointer-events: none; animation: floatUp 1s ease-out forwards; z-index: 100; }
-        @keyframes floatUp { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-100px); opacity: 0; } }
+        #hud {
+            position: absolute; top: 10px; width: 100%;
+            display: flex; justify-content: space-around;
+            font-size: 1.1rem; font-weight: bold; z-index: 10;
+            text-shadow: 2px 2px 4px black;
+        }
 
-        .screen { position: absolute; width: 100%; height: 100%; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); z-index: 5; padding: 20px; box-sizing: border-box; }
-        .active { display: flex; }
+        .dragon-icon { font-size: 5rem; animation: float 2s infinite ease-in-out; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
 
-        #hud { position: absolute; top: 10px; width: 100%; display: flex; justify-content: space-around; font-size: 1.2rem; font-weight: bold; z-index: 10; }
-        #timer-container { position: absolute; bottom: 20px; width: 80%; height: 15px; background: rgba(0,0,0,0.3); border-radius: 10px; overflow: hidden; }
-        #timer-bar { width: 100%; height: 100%; background: #f1c40f; transition: width 0.1s linear; }
+        button {
+            padding: 15px 30px; font-size: 1.2rem;
+            cursor: pointer; background: var(--wizard-purple);
+            color: white; border: none; border-radius: 50px;
+            box-shadow: 0 5px #7d3c98; margin: 10px;
+        }
 
-        button { padding: 15px 30px; font-size: 1.2rem; cursor: pointer; background: var(--wizard-purple); color: white; border: none; border-radius: 50px; box-shadow: 0 5px #7d3c98; margin: 10px; }
-        
-        .char-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
-        .char-card { background: rgba(255,255,255,0.2); padding: 10px; border-radius: 10px; cursor: pointer; border: 3px solid transparent; }
-        .char-card.selected { border-color: var(--gold); background: rgba(255,255,255,0.4); }
+        #shape-grid {
+            display: flex; gap: 12px; flex-wrap: wrap;
+            justify-content: center; margin-top: 10px; width: 100%;
+        }
 
-        #shape-stage, #boss-shapes { display: flex; gap: 20px; margin-top: 20px; flex-wrap: wrap; justify-content: center; }
-        .game-shape { width: 90px; height: 90px; cursor: pointer; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3)); transition: 0.2s; }
-        .game-shape:active { transform: scale(0.8); }
+        .game-shape {
+            width: 65px; height: 65px;
+            cursor: pointer; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3));
+        }
+
+        #timer-container {
+            position: absolute; bottom: 15px; width: 80%;
+            height: 12px; background: rgba(0,0,0,0.3);
+            border-radius: 10px; overflow: hidden;
+        }
+
+        #timer-bar { width: 100%; height: 100%; background: var(--gold); }
+
+        /* REWARD STYLES */
+        #reward-hoard {
+            background: rgba(0,0,0,0.3);
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            min-height: 40px;
+        }
+
+        .nav-links { margin-top: 20px; }
     </style>
 </head>
 <body>
 
 <div id="game-container">
-    <div id="bg-layer"></div>
     <div id="hud">
-        <div id="stats-stars">⭐ Stars: 0</div>
-        <div id="stats-lives">❤️ Lives: 3</div>
+        <div id="stats-score">⭐: 0</div>
+        <div id="stats-lives">❤️: 3</div>
     </div>
 
-    <div id="start-menu" class="screen active">
-        <h1>✨ Shape Wizard ✨</h1>
-        <button onclick="showScreen('char-select')">PLAY</button>
+    <div id="start-screen" class="screen active">
+        <div id="reward-hoard">Hoard: <span id="hoard-list">💎</span></div>
+        <div class="dragon-icon">🐲</div>
+        <h1>Hungry Dragon</h1>
+        <button onclick="startGame()">START FEEDING</button>
     </div>
 
-    <div id="char-select" class="screen">
-        <h2>Choose a Companion</h2>
-        <div class="char-grid">
-            <div class="char-card" onclick="selectChar('🐰')"><h1>🐰</h1></div>
-            <div class="char-card" onclick="selectChar('🐼')"><h1>🐼</h1></div>
-            <div class="char-card" onclick="selectChar('🦕')"><h1>🦕</h1></div>
-            <div class="char-card" onclick="selectChar('🦄')"><h1>🦄</h1></div>
-        </div>
-        <button onclick="showScreen('world-map')" id="to-map-btn" style="display:none;">GO!</button>
+    <div id="reward-screen" class="screen" style="background: var(--wizard-purple);">
+        <h1 style="color: var(--gold);">TREASURE!</h1>
+        <p>The Dragon gave you a gift for 100 points!</p>
+        <div id="new-reward-emoji" style="font-size: 5rem; margin: 20px;">🎁</div>
+        <button onclick="continueGame()">KEEP FEEDING</button>
     </div>
-
-    <div id="world-map" class="screen"></div>
 
     <div id="game-screen" class="screen">
-        <h2 id="instruction">Find the Shape!</h2>
-        <div id="shape-stage"></div>
+        <div class="dragon-icon" style="font-size: 3rem;">🐲</div>
+        <h2 id="instruction">Feed me!</h2>
+        <div id="shape-grid"></div>
         <div id="timer-container"><div id="timer-bar"></div></div>
-    </div>
-
-    <div id="boss-screen" class="screen" style="background: var(--boss-red);">
-        <h1 id="boss-title">DRAGON BOSS!</h1>
-        <div id="boss-icon" class="boss-emoji">🐲</div>
-        <h2 id="boss-instruction">Bring me 3 Circles!</h2>
-        <div id="boss-shapes"></div>
     </div>
 </div>
 
+<div class="nav-links">
+    <table align="center">
+        <tr>
+            <td align="center">
+                <a href="2d.html"><img src="np.png" width="70"></a><br><br>
+                <a href="1.html"><img src="ACT.png" width="70"></a>
+            </td>
+        </tr>
+    </table>
+</div>
+
 <script>
-    let gameState = JSON.parse(localStorage.getItem('shapeWizardData')) || {
-        stars: 0, lives: 3, character: '🐰', currentWorld: 'jungle'
-    };
-    
+    let score = 0;
+    let lives = 3;
     let timer;
-    let timeLeft = 30;
-    let bossCount = 0;
-    let bossTarget = 3;
+    let timeLeft = 25;
+    let targetShape = "";
+    let targetAmount = 0;
+    let currentFound = 0;
+    let collectedRewards = JSON.parse(localStorage.getItem('dragonRewards')) || ["💎"];
+
     const shapes = ['circle', 'square', 'triangle', 'star'];
+    const rewards = ["👑", "💍", "🍦", "🍗", "🍕", "🎮", "🎸", "🚲", "🎨", "🚀", "🛸"];
 
-    function createBackground() {
-        const bgLayer = document.getElementById('bg-layer');
-        bgLayer.innerHTML = '';
-        const icons = gameState.currentWorld === 'jungle' ? ['🍃', '☁️', '🦜'] : ['⭐', '☄️', '☁️'];
-        for(let i=0; i<6; i++) {
-            const div = document.createElement('div');
-            div.className = 'bg-obj';
-            div.innerText = icons[Math.floor(Math.random()*icons.length)];
-            div.style.top = Math.random() * 80 + "%";
-            div.style.animationDuration = (Math.random() * 10 + 5) + "s";
-            div.style.animationDelay = (Math.random() * 5) + "s";
-            bgLayer.appendChild(div);
-        }
+    function updateHoardDisplay() {
+        document.getElementById('hoard-list').innerText = collectedRewards.join(" ");
     }
 
-    function showScreen(screenId) {
+    function showScreen(id) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById(screenId).classList.add('active');
-        if(screenId === 'world-map') renderWorldMap();
-        if(screenId !== 'game-screen' && screenId !== 'boss-screen') clearInterval(timer);
-    }
-
-    function renderWorldMap() {
-        const map = document.getElementById('world-map');
-        map.innerHTML = `<h2>Select World</h2>`;
-        const worlds = [
-            {id:'jungle', name:'🌴 Jungle', cost:0, color:'#27ae60'},
-            {id:'space', name:'🚀 Space', cost:50, color:'#2c3e50'}
-        ];
-        worlds.forEach(w => {
-            const btn = document.createElement('button');
-            btn.innerText = gameState.stars >= w.cost ? w.name : `🔒 ${w.cost}⭐`;
-            btn.onclick = () => {
-                if(gameState.stars >= w.cost) {
-                    gameState.currentWorld = w.id;
-                    document.getElementById('game-container').style.background = w.color;
-                    createBackground();
-                    startGame();
-                }
-            };
-            map.appendChild(btn);
-        });
-    }
-
-    function selectChar(emoji) {
-        gameState.character = emoji;
-        document.querySelectorAll('.char-card').forEach(c => c.classList.remove('selected'));
-        event.currentTarget.classList.add('selected');
-        document.getElementById('to-map-btn').style.display = 'block';
+        document.getElementById(id).classList.add('active');
     }
 
     function startGame() {
+        score = 0;
+        lives = 3;
+        updateHUD();
         showScreen('game-screen');
-        timeLeft = 30;
+        newRound();
+    }
+
+    function continueGame() {
+        showScreen('game-screen');
+        newRound();
+    }
+
+    function newRound() {
+        currentFound = 0;
+        timeLeft = 25; 
+        targetShape = shapes[Math.floor(Math.random() * shapes.length)];
+        targetAmount = Math.floor(Math.random() * 3) + 2; // 2 to 4 shapes
+
+        document.getElementById('instruction').innerHTML = 
+            `Feed me <b>${targetAmount} ${targetShape.toUpperCase()}S</b>!`;
+
+        renderShapes();
         startTimer();
-        nextLevel();
     }
 
     function startTimer() {
         clearInterval(timer);
         timer = setInterval(() => {
-            timeLeft -= 0.1;
-            const bar = document.getElementById('timer-bar');
-            bar.style.width = (timeLeft / 30 * 100) + "%";
+            // Get slightly faster as score increases
+            let difficulty = 0.2 + (Math.floor(score/100) * 0.05);
+            timeLeft -= difficulty;
             
-            if(timeLeft < 5) bar.classList.add('shake');
-            else bar.classList.remove('shake');
-
-            if(timeLeft <= 0) {
+            document.getElementById('timer-bar').style.width = (timeLeft / 25 * 100) + "%";
+            
+            if (timeLeft <= 0) {
                 clearInterval(timer);
-                alert("ROAR! Time is up!");
-                gameState.lives--;
+                lives--;
                 updateHUD();
-                showScreen('world-map');
+                if (lives > 0) {
+                    alert("Grrr! The Dragon is hungry!");
+                    newRound();
+                } else {
+                    alert("Game Over! The Dragon went to sleep.");
+                    showScreen('start-screen');
+                    updateHoardDisplay();
+                }
             }
         }, 100);
     }
 
-    function nextLevel() {
-        // Trigger Boss Battle at exactly 100, 200, 300 stars
-        if (gameState.stars > 0 && gameState.stars % 100 === 0) {
-            startBossBattle();
-            return;
+    function renderShapes() {
+        const grid = document.getElementById('shape-grid');
+        grid.innerHTML = '';
+        let options = [];
+        for (let i = 0; i < targetAmount; i++) options.push(targetShape);
+        while (options.length < 12) {
+            options.push(shapes[Math.floor(Math.random() * shapes.length)]);
         }
+        options.sort(() => Math.random() - 0.5);
 
-        showScreen('game-screen');
-        const stage = document.getElementById('shape-stage');
-        stage.innerHTML = '';
-        const target = shapes[Math.floor(Math.random() * shapes.length)];
-        gameState.currentShape = target;
-        document.getElementById('instruction').innerText = `${gameState.character} says: Find the ${target.toUpperCase()}!`;
-
-        let options = [...shapes].sort(() => 0.5 - Math.random());
         options.forEach(s => {
             const div = document.createElement('div');
             div.className = 'game-shape';
-            div.innerHTML = getShapeSVG(s);
-            div.onclick = (e) => checkAnswer(s, e);
-            stage.appendChild(div);
-        });
-    }
-
-    function startBossBattle() {
-        showScreen('boss-screen');
-        bossCount = 0;
-        timeLeft = 20; // Extra time for bosses
-        startTimer();
-        
-        const bossShape = shapes[Math.floor(Math.random() * shapes.length)];
-        gameState.currentShape = bossShape;
-        
-        document.getElementById('boss-instruction').innerText = `Bring me ${bossTarget} ${bossShape.toUpperCase()}S!`;
-        renderBossOptions();
-    }
-
-    function renderBossOptions() {
-        const stage = document.getElementById('boss-shapes');
-        stage.innerHTML = '';
-        
-        // CREATE THE LIST: 3 Targets + 5 Random non-targets
-        let bossOptions = [];
-        for(let i=0; i<3; i++) bossOptions.push(gameState.currentShape);
-        
-        const others = shapes.filter(s => s !== gameState.currentShape);
-        for(let i=0; i<5; i++) bossOptions.push(others[Math.floor(Math.random() * others.length)]);
-
-        // Shuffle
-        bossOptions.sort(() => 0.5 - Math.random());
-
-        bossOptions.forEach(s => {
-            const div = document.createElement('div');
-            div.className = 'game-shape';
-            div.innerHTML = getShapeSVG(s);
-            div.onclick = (e) => {
-                if(s === gameState.currentShape) {
-                    bossCount++;
-                    spawnStar(e.clientX, e.clientY);
-                    div.style.visibility = 'hidden'; // Hide the found shape
-                    
-                    if(bossCount >= bossTarget) {
-                        gameState.stars += 10; // Increment so we aren't stuck on 100
+            div.innerHTML = getSVG(s);
+            div.onclick = () => {
+                if (s === targetShape) {
+                    currentFound++;
+                    div.style.visibility = 'hidden';
+                    if (currentFound >= targetAmount) {
+                        let oldScore = score;
+                        score += 10;
                         updateHUD();
-                        alert("The Dragon is happy! You won! ✨");
-                        nextLevel();
+                        clearInterval(timer);
+                        
+                        // Check for Reward Milestone
+                        if (Math.floor(score/100) > Math.floor(oldScore/100)) {
+                            giveReward();
+                        } else {
+                            setTimeout(newRound, 500);
+                        }
                     }
                 } else {
-                    timeLeft -= 3; // Penalty
+                    timeLeft -= 4; // Penalty
+                    div.style.opacity = '0.3';
                 }
             };
-            stage.appendChild(div);
+            grid.appendChild(div);
         });
     }
 
-    function checkAnswer(selected, event) {
-        if (selected === gameState.currentShape) {
-            gameState.stars += 10;
-            timeLeft = Math.min(timeLeft + 2, 30);
-            spawnStar(event.clientX, event.clientY);
-            updateHUD();
-            nextLevel();
-        } else {
-            gameState.lives--;
-            updateHUD();
-            if(gameState.lives <= 0) {
-                alert("Game Over!");
-                gameState.stars = 0;
-                gameState.lives = 3;
-                showScreen('start-menu');
-            }
-        }
-    }
-
-    function spawnStar(x, y) {
-        const star = document.createElement('div');
-        star.className = 'floating-star';
-        star.innerHTML = '⭐ +10';
-        star.style.left = (x - 50) + 'px';
-        star.style.top = (y - 50) + 'px';
-        document.body.appendChild(star);
-        setTimeout(() => star.remove(), 1000);
+    function giveReward() {
+        const prize = rewards[Math.floor(Math.random() * rewards.length)];
+        collectedRewards.push(prize);
+        localStorage.setItem('dragonRewards', JSON.stringify(collectedRewards));
+        
+        document.getElementById('new-reward-emoji').innerText = prize;
+        showScreen('reward-screen');
     }
 
     function updateHUD() {
-        document.getElementById('stats-stars').innerText = `⭐ Stars: ${gameState.stars}`;
-        document.getElementById('stats-lives').innerText = `❤️ Lives: ${gameState.lives}`;
-        localStorage.setItem('shapeWizardData', JSON.stringify(gameState));
+        document.getElementById('stats-score').innerText = `⭐: ${score}`;
+        document.getElementById('stats-lives').innerText = `❤️: ${lives}`;
     }
 
-    function getShapeSVG(type) {
+    function getSVG(type) {
         const colors = {circle: '#e74c3c', square: '#ffffff', triangle: '#2ecc71', star: '#f1c40f'};
         if(type === 'circle') return `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="${colors.circle}"/></svg>`;
-        if(type === 'square') return `<svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" fill="${colors.square}"/></svg>`;
-        if(type === 'triangle') return `<svg viewBox="0 0 100 100"><polygon points="50,10 90,90 10,90" fill="${colors.triangle}"/></svg>`;
+        if(type === 'square') return `<svg viewBox="0 0 100 100"><rect x="15" y="15" width="70" height="70" fill="${colors.square}"/></svg>`;
+        if(type === 'triangle') return `<svg viewBox="0 0 100 100"><polygon points="50,15 85,85 15,85" fill="${colors.triangle}"/></svg>`;
         if(type === 'star') return `<svg viewBox="0 0 100 100"><polygon points="50,5 63,35 95,35 70,55 80,85 50,70 20,85 30,55 5,35 37,35" fill="${colors.star}"/></svg>`;
     }
 
-    updateHUD();
-    createBackground();
+    updateHoardDisplay();
 </script>
- 
-
-<center>
-<table alighn="right">
-<tr>
-	<td>
-	 <center><a href="2d.html"><img src="np.png" width="150" length="200"></a></center>
-	<br>
-	 <center><a href="1.html"><img src="ACT.png" width="150" length="150"></a></center>
-	</td>
-</tr>
-</table>
-</center>
 
 </body>
 </html>
