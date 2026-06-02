@@ -18,30 +18,35 @@
             user-select: none;
         }
 
-        #game-bar { width: 100%; padding: 12px; text-align: center; background: #0ea5e9; color: white; font-weight: bold; font-size: 1.1rem; }
+        #game-bar { width: 100%; padding: 12px; text-align: center; background: #0ea5e9; color: white; font-weight: bold; font-size: 1.1rem; z-index: 10; }
         #difficulty-tag { background: #10b981; padding: 2px 8px; border-radius: 10px; margin-left: 10px; font-size: 0.9rem; }
         h1 { color: #0369a1; margin: 15px 0 5px 0; font-size: 1.6rem; text-align: center; }
-        #instruction { font-size: 1.1rem; color: #0c4a6e; margin-bottom: 15px; font-weight: bold; text-align: center; height: 1.2em;}
+        #instruction { font-size: 1.1rem; color: #0c4a6e; margin-bottom: 10px; font-weight: bold; text-align: center; height: 1.2em;}
 
+        /* MOBILE FIX: Added overflow-x: auto to allow swiping the train */
         #viewport {
             width: 100%;
-            overflow: hidden;
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
             position: relative;
-            height: 170px;
+            height: 180px;
             margin-top: 10px;
             display: flex;
             align-items: flex-end;
+            padding-bottom: 20px;
         }
 
         #train-track {
             display: flex;
             align-items: flex-end;
             position: absolute;
-            left: -100vw;
+            left: -150%; /* Start off-screen */
             transition: left 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+            padding-right: 50px;
         }
 
-        .engine { font-size: 4.2rem; margin-right: -5px; z-index: 5; }
+        .engine { font-size: 4.2rem; margin-right: -5px; z-index: 5; flex-shrink: 0; }
         
         .car {
             width: 55px; height: 55px;
@@ -51,6 +56,13 @@
             font-size: 2.2rem; margin: 0 4px;
             position: relative; box-shadow: 0 4px 0 #075985;
             transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        /* Responsive sizing for smaller phones */
+        @media (max-width: 400px) {
+            .car { width: 45px; height: 45px; font-size: 1.8rem; }
+            .engine { font-size: 3.5rem; }
         }
 
         .car::after { content: '⚫ ⚫'; position: absolute; bottom: -18px; font-size: 0.7rem; width: 100%; text-align: center; }
@@ -59,21 +71,24 @@
         .slot-car.active-target { border-color: #f59e0b; background: #fef3c7; }
 
         #choices-panel {
-            display: flex; justify-content: center; gap: 20px;
-            margin-top: 40px; padding: 15px;
+            display: flex; justify-content: center; gap: 15px;
+            margin-top: 20px; padding: 15px;
             background: rgba(255,255,255,0.6); border-radius: 25px;
-            min-height: 80px; width: 85%; max-width: 500px;
+            min-height: 80px; width: 90%; max-width: 500px;
+            flex-wrap: wrap;
         }
 
         .choice-card {
-            width: 70px; height: 70px; background: #fff;
+            width: 65px; height: 65px; background: #fff;
             border: 4px solid #fbbf24; border-radius: 18px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 2.8rem; cursor: grab; box-shadow: 0 5px 0 #d97706;
+            font-size: 2.5rem; cursor: grab; box-shadow: 0 5px 0 #d97706;
+            touch-action: none;
         }
 
-        .train-enter { left: 5% !important; }
-        .train-exit { left: 110vw !important; }
+        /* Better entry for mobile screens */
+        .train-enter { left: 10px !important; }
+        .train-exit { left: 120vw !important; }
 
         #reward-screen {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -84,6 +99,7 @@
         .sticker {
             position: absolute; font-size: 2.5rem;
             animation: popOut 2s forwards;
+            pointer-events: none;
         }
         @keyframes popOut {
             0% { transform: scale(0); opacity: 1; }
@@ -97,8 +113,8 @@
 </head>
 <body>
 
-<div id="game-bar">Train Level: <span id="round-num">1</span>/11 <span id="difficulty-tag">Easy Mode</span></div>
-<h1 id="header-text">The Pattern Train is coming!</h1>
+<div id="game-bar">Level: <span id="round-num">1</span>/11 <span id="difficulty-tag">Easy Mode</span></div>
+<h1 id="header-text">Pattern Train Academy</h1>
 <div id="instruction">Drag the items up!</div>
 
 <div id="viewport">
@@ -110,9 +126,9 @@
 <div id="choices-panel"></div>
 
 <div id="reward-screen">
-    <div style="font-size: 8rem;">👑🏆👑</div>
-    <h1 style="color: #047857; font-size: 2.5rem;">GRAND TRAIN MASTER!</h1>
-    <p style="font-size: 1.3rem; color: #065f46;">You beat the entire pattern academy perfectly!</p>
+    <div style="font-size: 6rem;">👑🏆👑</div>
+    <h1 style="color: #047857; font-size: 2rem;">GRAND TRAIN MASTER!</h1>
+    <p style="font-size: 1.1rem; color: #065f46;">You beat every pattern!</p>
     <button onclick="location.reload()">Play Again! 🔄</button>
 </div>
 
@@ -127,12 +143,10 @@
     let currentRound = 1;
     let activeSlotIndex = null;
     
-    // Master Lists
     const items2D = [{a:"🍰",b:"🧆"}, {a:"🍎",b:"🍐"}, {a:"🍩",b:"🍪"}, {a:"🐱",b:"🐶"}, {a:"🚗",b:"🚁"}];
     const items3D = [{a:"🔴",b:"🟦",c:"⭐"}, {a:"🦁",b:"🐵",c:"🐘"}, {a:"🍌",b:"🍇",c:"🍓"}];
     const itemsHard = [{a:"🍦",b:"🍭"}, {a:"🎈",b:"🎁"}, {a:"🐸",b:"🐥"}];
 
-    // Shuffled State
     let session2D, session3D, sessionHard;
 
     function shuffleSession() {
@@ -154,23 +168,23 @@
         if (currentRound <= 5) {
             diffTag.textContent = "Easy Mode";
             diffTag.style.background = "#10b981";
-            instruction.textContent = "Fill the empty train car!";
+            instruction.textContent = "Fill the empty car!";
             const pair = session2D[currentRound - 1];
             pattern = [pair.a, pair.b, pair.a, pair.b, pair.a, pair.b];
             missingIndices = [[2, 4, 5][Math.floor(Math.random() * 3)]];
         } 
         else if (currentRound <= 8) {
-            diffTag.textContent = "3 Items Mode!";
+            diffTag.textContent = "3 Items!";
             diffTag.style.background = "#f59e0b";
-            instruction.textContent = "Watch out! 3 different items now!";
+            instruction.textContent = "3 different items now!";
             const trio = session3D[currentRound - 6];
             pattern = [trio.a, trio.b, trio.c, trio.a, trio.b, trio.c];
             missingIndices = [[3, 4, 5][Math.floor(Math.random() * 3)]];
         } 
         else {
-            diffTag.textContent = "Double Missing! 🧠";
+            diffTag.textContent = "Hard Mode 🧠";
             diffTag.style.background = "#ef4444";
-            instruction.textContent = "Tap a red box to choose it first!";
+            instruction.textContent = "Find both missing items!";
             const pair = sessionHard[currentRound - 9];
             pattern = [pair.a, pair.b, pair.a, pair.b, pair.a, pair.b];
             missingIndices = [2, 4];
@@ -234,13 +248,18 @@
             activeElem.style.display = 'none';
             let target = document.elementFromPoint(ev.clientX, ev.clientY);
             let slot = target ? target.closest('.slot-car') : null;
+            
+            // Allow tap-to-place if dropped generally near the active slot
             if(!slot && activeSlotIndex !== null) slot = track.querySelector(`.slot-car[data-idx="${activeSlotIndex}"]`);
+            
             activeElem.style.display = 'flex';
             activeElem.style.position = 'static';
+            
             if (slot && activeElem.textContent === slot.dataset.correct) {
                 slot.textContent = activeElem.textContent;
                 slot.classList.remove('slot-car', 'active-target');
                 slot.style.borderColor = "#22c55e";
+                slot.style.background = "#f0fdf4";
                 slot.onpointerdown = null;
                 const nextSlot = track.querySelector('.slot-car');
                 if(nextSlot) {
@@ -249,13 +268,15 @@
                 } else { activeSlotIndex = null; }
                 giveCelebrationStickers();
                 checkRoundComplete();
-            } else { choiceBox.appendChild(activeElem); }
+            } else { 
+                choiceBox.appendChild(activeElem); 
+            }
         };
     }
 
     function checkRoundComplete() {
         if (track.querySelectorAll('.slot-car').length === 0) {
-            header.textContent = "Choo Choo! Fantastic!";
+            header.textContent = "Choo Choo! Great Job!";
             setTimeout(() => {
                 track.classList.add('train-exit');
                 setTimeout(() => {
@@ -267,12 +288,12 @@
     }
 
     function giveCelebrationStickers() {
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 8; i++) {
             const sticker = document.createElement('div');
             sticker.className = 'sticker';
-            sticker.textContent = ["⭐", "✨", "🎈"][Math.floor(Math.random() * 3)];
+            sticker.textContent = ["⭐", "✨", "🎈", "🎉"][Math.floor(Math.random() * 4)];
             sticker.style.left = Math.random() * 80 + 10 + "vw";
-            sticker.style.top = "60vh";
+            sticker.style.top = "50vh";
             document.body.appendChild(sticker);
             setTimeout(() => sticker.remove(), 2000);
         }
@@ -281,9 +302,7 @@
     shuffleSession();
     initRound();
 </script>
- 
 
-<br>
 <br>
 <br>
 
@@ -291,7 +310,7 @@
 <table>
 <tr>
 	<td>
-	 <center><a href="3f.html"><img src="np.png" width="150" length="200"></a></center>
+	 <center><a href="sesand.html"><img src="np.png" width="150" length="200"></a></center>
 	</td>
 
 	<td>
@@ -300,6 +319,7 @@
 </tr>
 </table>
 </center>
+
 
 </body>
 </html>
