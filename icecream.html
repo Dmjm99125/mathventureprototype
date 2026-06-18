@@ -15,20 +15,23 @@
 
         body {
             margin: 0;
-            padding: 0;
+            padding: 20px; /* Added padding to protect phone edges */
             font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
             background: linear-gradient(180deg, #faf5ff 0%, #f3e8ff 100%);
             color: var(--dark);
             display: flex;
+            flex-direction: column; /* Forces vertical stacking */
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            gap: 25px; /* Adds space between game and buttons */
+            box-sizing: border-box;
             user-select: none;
             -webkit-user-select: none;
         }
 
         #game-container {
-            width: 95%;
+            width: 100%; /* Changed to 100% for safe mobile sizing */
             max-width: 460px;
             background: #ffffff;
             border: 6px solid #a855f7;
@@ -185,12 +188,32 @@
             transition: opacity 0.4s ease;
         }
         #shop-overlay.show { opacity: 1; pointer-events: auto; }
+
+        /* Modern layout for bottom navigation images */
+        .nav-buttons {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap; /* Allows safe stacking on narrow screens */
+            gap: 20px;
+        }
+
+        .nav-buttons img {
+            transition: transform 0.2s;
+            border-radius: 15px;
+        }
+
+        @media (hover: hover) {
+            .nav-buttons img:hover {
+                transform: scale(1.05);
+            }
+        }
     </style>
 </head>
 <body>
 
     <div id="game-container">
-        <!-- Milestone Overlay Screen -->
         <div id="shop-overlay">
             <h2 style="color: #a855f7; margin: 0; font-size: 2.2rem;">🍦 Ice Cream Master! 🍦</h2>
             <p style="font-size: 1.2rem; margin: 5px 0; color: #475569;">You unlocked a new special topping:</p>
@@ -198,7 +221,6 @@
             <button class="serve-btn" onclick="closeShopWindow()">Make Next Sundae!</button>
         </div>
 
-        <!-- HUD Row -->
         <div class="hud-row">
             <div>Sundaes: <span id="score-text" style="color: #a855f7;">0</span></div>
             <div>Next Topping: <span id="target-text" style="color: var(--cone-brown);">10</span></div>
@@ -207,7 +229,6 @@
         <div id="math-banner">3 + 2</div>
         <p style="margin: 0; font-weight: bold; color: #64748b; font-size: 0.9rem;">Drag ice cream to the bowl! Tap a scoop to remove it.</p>
 
-        <!-- The Interactive Tub Dispensers -->
         <div class="tub-container">
             <div class="ice-cream-tub" style="border-color: var(--cream-pink);">
                 <div class="scoop" draggable="true" id="pink-scoop" ondragstart="drag(event)">🍨</div>
@@ -219,7 +240,6 @@
             </div>
         </div>
 
-        <!-- The Sundae Dish Bowl Stage -->
         <div id="serving-stage">
             <div id="glass-bowl">
                 <div class="bowl-half" id="left-bowl-half" ondragover="allowDrop(event)" ondrop="drop(event, 'left')"></div>
@@ -227,14 +247,17 @@
             </div>
         </div>
 
-        <!-- Submission Trigger -->
         <button class="serve-btn" onclick="checkSundaeOrder()">Ring Bell & Serve! 🔔</button>
 
-        <!-- Topping Badge Shelf -->
         <div id="badge-shelf">
             <div style="font-size: 0.75rem; color: #94a3b8; font-weight: bold; text-transform: uppercase; margin-bottom: 3px;">Unlocked Topping Badges</div>
             <div id="shelf-badges"></div>
         </div>
+    </div>
+
+    <div class="nav-buttons">
+        <a href="pizza.html"><img src="np.png" width="80" height="50" alt="Next Page"></a>
+        <a href="1.html"><img src="ACT.png" width="80" height="50" alt="Activity"></a>
     </div>
 
     <script>
@@ -401,18 +424,5 @@
 
         generateNewRecipe();
     </script>
-
-<center>
-<table>
-<tr>
-	<td>
-	 <center><a href="pizza.html"><img src="np.png" width="150" length="200"></a></center>
-	<br>
-	 <center><a href="1.html"><img src="ACT.png" width="150" length="150"></a></center>
-	</td>
-</tr>
-</table>
-</center>
-
 </body>
 </html>

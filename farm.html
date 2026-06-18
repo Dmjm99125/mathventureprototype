@@ -15,21 +15,26 @@
 
         body {
             margin: 0;
-            padding: 0;
+            padding: 20px; 
             font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
             background-color: #f0fdf4;
             color: var(--text-dark);
             display: flex;
-            justify-content: center;
+            flex-direction: column; 
+            justify-content: flex-start; /* Safely starts content at the top on small screens */
             align-items: center;
             min-height: 100vh;
+            min-height: 100dvh; /* Accounts for mobile browser address bars */
+            gap: 25px; 
             user-select: none;
             -webkit-user-select: none;
+            box-sizing: border-box;
         }
 
         #game-box {
-            width: 90%;
+            width: 100%; 
             max-width: 480px;
+            margin-top: auto; /* Pushes the box down to center when there is space */
             background: linear-gradient(to bottom, var(--sky) 0%, #e0f2fe 40%, #f0fdf4 40%, #dcfce7 100%);
             border: 6px solid var(--wood);
             border-radius: 32px;
@@ -190,12 +195,33 @@
             box-shadow: 0 4px 0 #15803d;
             font-family: inherit;
         }
+
+        /* Modern layout for bottom navigation images */
+        .nav-buttons {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap; 
+            gap: 20px;
+            margin-bottom: auto; /* Pushes the buttons up to balance the centering */
+        }
+
+        .nav-buttons img {
+            transition: transform 0.2s;
+            border-radius: 15px;
+        }
+
+        @media (hover: hover) {
+            .nav-buttons img:hover {
+                transform: scale(1.05);
+            }
+        }
     </style>
 </head>
 <body>
 
     <div id="game-box">
-        <!-- Milestone Prize Window -->
         <div id="reward-screen">
             <h2 style="color: #eab308; margin: 0; font-size: 2.2rem;">🏆 Farm Master! 🏆</h2>
             <p style="font-size: 1.2rem; margin: 5px 0; color: #475569;">Amazing! You unlocked a Golden Trophy!</p>
@@ -203,13 +229,11 @@
             <button class="close-reward-btn" onclick="hidePrize()">Keep Farming!</button>
         </div>
 
-        <!-- Scores and Target Goals -->
         <div class="stats">
             <div>Score: <span id="score-num" style="color: #22c55e;">0</span></div>
             <div>Next Reward: <span id="target-num" style="color: #ef4444;">10</span></div>
         </div>
 
-        <!-- The Animation Stage -->
         <div id="stage">
             <div id="barn">🏡</div>
             <div id="pasture"></div>
@@ -224,11 +248,15 @@
             <button class="farm-btn" onclick="tapAnswer(this)">?</button>
         </div>
 
-        <!-- Trophy Shelf Accumulator -->
         <div id="trophy-shelf">
             <div style="font-size: 0.75rem; color: #64748b; font-weight: bold; text-transform: uppercase;">Your Trophies</div>
             <div id="shelf-items"></div>
         </div>
+    </div>
+
+    <div class="nav-buttons">
+        <a href="hip.html"><img src="np.png" width="80" height="50" alt="Next Page"></a>
+        <a href="1.html"><img src="ACT.png" width="80" height="50" alt="Activity"></a>
     </div>
 
     <script>
@@ -247,7 +275,6 @@
             const now = audioCtx.currentTime;
 
             if (style === 'slide') {
-                // Smooth moving "Whoosh/Slide" frequency pitch sweep
                 osc.type = 'triangle';
                 osc.frequency.setValueAtTime(150, now);
                 osc.frequency.linearRampToValueAtTime(300, now + 1.8);
@@ -256,7 +283,6 @@
                 osc.start(now);
                 osc.stop(now + 1.8);
             } else if (style === 'win') {
-                // High cheerful ring tone
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(523.25, now); // C5
                 osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
@@ -266,7 +292,6 @@
                 osc.start(now);
                 osc.stop(now + 0.4);
             } else if (style === 'lose') {
-                // Dissappointed buzzy diving drop tone
                 osc.type = 'sawtooth';
                 osc.frequency.setValueAtTime(180, now);
                 osc.frequency.linearRampToValueAtTime(90, now + 0.25);
@@ -275,7 +300,6 @@
                 osc.start(now);
                 osc.stop(now + 0.25);
             } else if (style === 'fanfare') {
-                // Big magical victory chime sequence
                 const scale = [523.25, 659.25, 783.99, 1046.50];
                 scale.forEach((pitch, i) => {
                     const o = audioCtx.createOscillator();
@@ -291,21 +315,17 @@
         }
 
         function createLevel() {
-            // Pick a uniform random farm animal family for the round
             const activeAnimal = farmAnimals[Math.floor(Math.random() * farmAnimals.length)];
 
-            // Subtraction calculations suited within safe visual ranges (Total between 4 and 8)
-            const num1 = Math.floor(Math.random() * 5) + 4; // 4 to 8 total items
-            const num2 = Math.floor(Math.random() * num1) + 1; // 1 to num1 (always hide at least one!)
+            const num1 = Math.floor(Math.random() * 5) + 4; 
+            const num2 = Math.floor(Math.random() * num1) + 1; 
             correctAnswer = num1 - num2;
 
             document.getElementById('math-problem').textContent = `${num1} - ${num2}`;
 
-            // Reset Pasture Space
             const pasture = document.getElementById('pasture');
             pasture.innerHTML = '';
 
-            // Render out the total initial animal list
             for(let i = 0; i < num1; i++) {
                 const item = document.createElement('span');
                 item.className = 'animal';
@@ -313,16 +333,14 @@
                 pasture.appendChild(item);
             }
 
-            // Animate designated subset moving away slowly into the barn door
             setTimeout(() => {
                 const children = document.querySelectorAll('.animal');
-                playSoundEffect('slide'); // Play slide effect as they move away
+                playSoundEffect('slide'); 
                 for(let j = 0; j < num2; j++) {
                     children[j].classList.add('walk-away');
                 }
             }, 600);
 
-            // Compute multiple options 
             let choices = [correctAnswer];
             while(choices.length < 3) {
                 let fake = Math.floor(Math.random() * 8);
@@ -330,7 +348,6 @@
             }
             choices.sort(() => Math.random() - 0.5);
 
-            // Populate choice answer panels
             const buttons = document.querySelectorAll('.farm-btn');
             buttons.forEach((btn, idx) => {
                 btn.textContent = choices[idx];
@@ -349,7 +366,6 @@
                 document.getElementById('score-num').textContent = score;
                 playSoundEffect('win');
 
-                // Color code answer node green on success match
                 button.style.backgroundColor = '#22c55e';
                 button.style.boxShadow = '0 6px 0 #16a34a';
                 buttons.forEach(btn => btn.disabled = true);
@@ -361,7 +377,7 @@
                 }
             } else {
                 playSoundEffect('lose');
-                button.style.backgroundColor = '#94a3b8'; // Grey out the incorrect button
+                button.style.backgroundColor = '#94a3b8'; 
                 button.style.boxShadow = '0 6px 0 #475569';
                 button.disabled = true;
             }
@@ -370,13 +386,11 @@
         function showPrizeShelfAlert() {
             playSoundEffect('fanfare');
             
-            // Push trophy miniature into storage drawer at screen base
             const shelf = document.getElementById('shelf-items');
             const trophy = document.createElement('span');
             trophy.textContent = '🏆';
             shelf.appendChild(trophy);
 
-            // Reveal congratulations modal
             document.getElementById('reward-screen').classList.add('show');
             milestoneGoal += 10;
         }
@@ -387,23 +401,7 @@
             createLevel();
         }
 
-        // Initialize the first level
         createLevel();
     </script>
-
-<center>
-<table>
-<tr>
-	<td>
-	 <center><a href="hip.html"><img src="np.png" width="150" length="200"></a></center>
- <br>
-	<center><a href="1.html"><img src="ACT.png" width="150" length="150"></a></center>
-	</td>
- 
-</tr>
-</table>
-</center>
-
-
 </body>
 </html>

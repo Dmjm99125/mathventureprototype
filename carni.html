@@ -15,20 +15,23 @@
 
         body {
             margin: 0;
-            padding: 0;
+            padding: 20px; /* Added padding so it doesn't touch phone edges */
             font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
             background: linear-gradient(180deg, #fef08a 0%, #fef9c3 100%);
             color: var(--dark);
             display: flex;
+            flex-direction: column; /* Forces everything to stack vertically */
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            gap: 25px; /* Adds space between the game box and the bottom buttons */
+            box-sizing: border-box;
             user-select: none;
             -webkit-user-select: none;
         }
 
         #game-box {
-            width: 95%;
+            width: 100%; /* Changed to 100% to fill the phone width safely */
             max-width: 460px;
             background: #ffffff;
             border: 6px dashed var(--carnival-red);
@@ -195,6 +198,28 @@
             box-shadow: 0 5px 0 #b91c1c;
             font-family: inherit;
         }
+
+        /* Modern layout for bottom navigation images */
+        .nav-buttons {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap; /* Allows them to stack neatly on tiny screens */
+            gap: 20px;
+        }
+
+        .nav-buttons img {
+            transition: transform 0.2s;
+            border-radius: 15px; /* Adds a nice rounded edge if your images don't have them */
+        }
+
+        /* Fun little hover effect for computers */
+        @media (hover: hover) {
+            .nav-buttons img:hover {
+                transform: scale(1.05);
+            }
+        }
     </style>
 </head>
 <body>
@@ -231,6 +256,11 @@
             <div style="font-size: 0.75rem; color: #94a3b8; font-weight: bold; text-transform: uppercase; margin-bottom: 3px;">Your Carnival Prizes</div>
             <div id="shelf-items"></div>
         </div>
+    </div>
+
+    <div class="nav-buttons">
+        <a href="icecream.html"><img src="np.png" width="80" height="50" alt="Next Page"></a>
+        <a href="1.html"><img src="ACT.png" width="80" height="50" alt="Activity"></a>
     </div>
 
     <script>
@@ -390,18 +420,5 @@
         // Run on startup
         generateAdditionLevel();
     </script>
-
-<center>
-<table>
-<tr>
-	<td>
-	 <center><a href="icecream.html"><img src="np.png" width="150" length="200"></a></center>
-	<br>
-	 <center><a href="1.html"><img src="ACT.png" width="150" length="150"></a></center>
-	</td>
-</tr>
-</table>
-</center>
-
 </body>
 </html>

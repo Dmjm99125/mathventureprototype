@@ -15,21 +15,26 @@
 
         body {
             margin: 0;
-            padding: 0;
+            padding: 20px;
             font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
             background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
             color: var(--dark);
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            justify-content: flex-start; /* Safely starts content at the top on small screens */
             align-items: center;
             min-height: 100vh;
+            min-height: 100dvh; /* Accounts for mobile browser address bars */
+            gap: 25px;
+            box-sizing: border-box;
             user-select: none;
             -webkit-user-select: none;
         }
 
         #game-board {
-            width: 90%;
+            width: 100%;
             max-width: 480px;
+            margin-top: auto; /* Pushes the box down to center when there is space */
             background: white;
             border-radius: 30px;
             padding: 25px;
@@ -37,6 +42,7 @@
             text-align: center;
             position: relative;
             overflow: hidden;
+            box-sizing: border-box;
         }
 
         /* Top Bar */
@@ -172,12 +178,33 @@
             flex-wrap: wrap;
             font-size: 1.5rem;
         }
+
+        /* Modern layout for bottom navigation images */
+        .nav-buttons {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap; 
+            gap: 20px;
+            margin-bottom: auto; /* Pushes the buttons up to balance the centering */
+        }
+
+        .nav-buttons img {
+            transition: transform 0.2s;
+            border-radius: 15px;
+        }
+
+        @media (hover: hover) {
+            .nav-buttons img:hover {
+                transform: scale(1.05);
+            }
+        }
     </style>
 </head>
 <body>
 
     <div id="game-board">
-        <!-- Reward Screen Pop-up -->
         <div id="reward-overlay">
             <h2 style="color: var(--pink); margin: 0; font-size: 2rem;">🌟 10 Points Reward! 🌟</h2>
             <p style="font-size: 1.2rem; margin: 5px 0;">You earned a new sticker for your book!</p>
@@ -185,7 +212,6 @@
             <button class="claim-btn" onclick="closeReward()">Yay! Keep Playing</button>
         </div>
 
-        <!-- Main Game -->
         <div class="header-stats">
             <div>Score: <span id="score-text" style="color: var(--pink);">0</span></div>
             <div>Target: <span id="target-text">10</span></div>
@@ -203,11 +229,15 @@
             <button class="ans-btn" onclick="selectAnswer(this)">?</button>
         </div>
 
-        <!-- Earned Stickers Collection -->
         <div id="sticker-book">
             <div class="sticker-title">Your Sticker Book</div>
             <div id="sticker-container"></div>
         </div>
+    </div>
+
+    <div class="nav-buttons">
+        <a href="space.html"><img src="np.png" width="80" height="50" alt="Next Page"></a>
+        <a href="1.html"><img src="ACT.png" width="80" height="50" alt="Activity"></a>
     </div>
 
     <script>
@@ -215,14 +245,11 @@
         let correctAnswer = 0;
         let nextRewardMilestone = 10;
 
-        // Reward pool options (stickers & food)
         const rewards = ['🍩', '🍦', '🍕', '🍟', '🎨', '🚀', '🦖', '🦄', '🏆', '🐼', '🦁', '👑'];
         const foodEmojis = ['🍏', '🍌', '🍉', '🍓', '🥕', '🍪'];
 
-        // Web Audio / Text-To-Speech Sound Effects (No external assets needed!)
         function playSound(type) {
             if ('speechSynthesis' in window) {
-                // Stop any speaking audio instantly so it responds quickly
                 window.speechSynthesis.cancel(); 
                 
                 let utterance = new SpeechSynthesisUtterance();
@@ -245,16 +272,14 @@
 
         function buildQuestion() {
             const hippo = document.getElementById('character-box');
-            hippo.textContent = '🦛'; // Reset hippo pose
+            hippo.textContent = '🦛'; 
             
-            // Subtraction problems safe for Kindergarten (Max top number is 8)
-            const num1 = Math.floor(Math.random() * 6) + 3; // 3 to 8
-            const num2 = Math.floor(Math.random() * (num1 + 1)); // 0 to num1
+            const num1 = Math.floor(Math.random() * 6) + 3; 
+            const num2 = Math.floor(Math.random() * (num1 + 1)); 
             correctAnswer = num1 - num2;
 
             document.getElementById('math-box').textContent = `${num1} - ${num2}`;
 
-            // Create 4 distinct choices
             let choices = [correctAnswer];
             while (choices.length < 4) {
                 let fake = Math.floor(Math.random() * 9);
@@ -262,10 +287,8 @@
                     choices.push(fake);
                 }
             }
-            // Shuffle
             choices.sort(() => Math.random() - 0.5);
 
-            // Assign numbers to buttons
             const buttons = document.querySelectorAll('.ans-btn');
             buttons.forEach((btn, idx) => {
                 btn.textContent = choices[idx];
@@ -283,14 +306,11 @@
                 score++;
                 document.getElementById('score-text').textContent = score;
                 
-                // Sound and visual reaction
                 playSound('correct');
                 document.getElementById('character-box').textContent = '😋'; 
 
-                // Disable buttons instantly
                 buttons.forEach(btn => btn.disabled = true);
 
-                // Check for 10-score milestone reward
                 if (score === nextRewardMilestone) {
                     setTimeout(triggerRewardScreen, 1000);
                 } else {
@@ -298,29 +318,25 @@
                 }
             } else {
                 playSound('wrong');
-                button.style.backgroundColor = '#ef4444'; // Red for wrong
+                button.style.backgroundColor = '#ef4444'; 
                 button.style.boxShadow = '0 8px 0 #b91c1c';
-                button.disabled = true; // locks just the wrong option
+                button.disabled = true; 
             }
         }
 
         function triggerRewardScreen() {
             playSound('reward');
             
-            // Choose a random sticker prize
             const randomSticker = rewards[Math.floor(Math.random() * rewards.length)];
             document.getElementById('prize-sticker').textContent = randomSticker;
             
-            // Add sticker to the bottom sticker book collection display
             const container = document.getElementById('sticker-container');
             const span = document.createElement('span');
             span.textContent = randomSticker;
             container.appendChild(span);
 
-            // Show screen overlay
             document.getElementById('reward-overlay').classList.add('show');
             
-            // Setup next target (20, 30, 40...)
             nextRewardMilestone += 10;
         }
 
@@ -330,22 +346,7 @@
             buildQuestion();
         }
 
-        // Start the game loop
         buildQuestion();
     </script>
-
-<center>
-<table>
-<tr>
-	<td>
-	 <center><a href="space.html"><img src="np.png" width="150" length="200"></a></center>
- <br>
-	<center><a href="1.html"><img src="ACT.png" width="150" length="150"></a></center>
-	</td>
- 
-</tr>
-</table>
-</center>
-
 </body>
 </html>

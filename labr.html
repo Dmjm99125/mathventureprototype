@@ -15,21 +15,26 @@
 
         body {
             margin: 0;
-            padding: 0;
+            padding: 20px; /* Added padding to protect phone edges */
             font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
             background: linear-gradient(180deg, #f0fdf4 0%, #dcfce7 100%);
             color: var(--dark);
             display: flex;
-            justify-content: center;
+            flex-direction: column; /* Forces vertical stacking */
+            justify-content: flex-start; /* Safely starts content at the top on small screens */
             align-items: center;
             min-height: 100vh;
+            min-height: 100dvh; /* Accounts for mobile browser address bars */
+            gap: 25px; /* Adds space between game and buttons */
+            box-sizing: border-box;
             user-select: none;
             -webkit-user-select: none;
         }
 
         #game-container {
-            width: 95%;
+            width: 100%; /* Changed to 100% for safe mobile sizing */
             max-width: 440px;
+            margin-top: auto; /* Pushes the box down to center when there is space */
             background: #ffffff;
             border: 6px solid var(--farm-red);
             border-radius: 32px;
@@ -155,6 +160,28 @@
             box-shadow: 0 5px 0 #16a34a;
             font-family: inherit;
         }
+
+        /* Modern layout for bottom navigation images */
+        .nav-buttons {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap; /* Allows safe stacking on narrow screens */
+            gap: 20px;
+            margin-bottom: auto; /* Pushes the buttons up to balance the centering */
+        }
+
+        .nav-buttons img {
+            transition: transform 0.2s;
+            border-radius: 15px;
+        }
+
+        @media (hover: hover) {
+            .nav-buttons img:hover {
+                transform: scale(1.05);
+            }
+        }
     </style>
 </head>
 <body>
@@ -195,6 +222,11 @@
         </div>
     </div>
 
+    <div class="nav-buttons">
+        <a href="arcade.html"><img src="np.png" width="80" height="50" alt="Next Page"></a>
+        <a href="1.html"><img src="ACT.png" width="80" height="50" alt="Activity"></a>
+    </div>
+
     <script>
         let score = 0;
         let farmMilestone = 10;
@@ -203,7 +235,6 @@
         let correctIndex = -1;
         let canClick = true;
 
-        // Structured kindergarten comparison sets (Heavy vs Light pairs)
         const farmPairs = [
             { heavy: { emoji: '🐄', name: 'Cow' }, light: { emoji: '🍓', name: 'Berry' } },
             { heavy: { emoji: '🚜', name: 'Tractor' }, light: { emoji: '🪶', name: 'Feather' } },
@@ -219,44 +250,35 @@
 
         function generateRound() {
             canClick = true;
-
-            // Pick heavy or light target text
             targetCondition = Math.random() > 0.5 ? "HEAVY" : "LIGHT";
             const taskSpan = document.getElementById('task-type');
             taskSpan.textContent = targetCondition;
 
-            // Stylize header based on search key
             if (targetCondition === "HEAVY") {
-                taskSpan.style.backgroundColor = "#ffedd5"; // Orange tint
+                taskSpan.style.backgroundColor = "#ffedd5";
                 taskSpan.style.borderColor = "#ea580c";
             } else {
-                taskSpan.style.backgroundColor = "#e0f2fe"; // Blue tint
+                taskSpan.style.backgroundColor = "#e0f2fe";
                 taskSpan.style.borderColor = "#0284c7";
             }
 
-            // Grab a random conceptual pair
             const selectedPair = farmPairs[Math.floor(Math.random() * farmPairs.length)];
-
-            // Randomize card order placement (Left vs Right side)
             const shuffleOrder = Math.random() > 0.5;
             
             const slot0 = shuffleOrder ? selectedPair.heavy : selectedPair.light;
             const slot1 = shuffleOrder ? selectedPair.light : selectedPair.heavy;
 
-            // Log down correct answer target
             if (targetCondition === "HEAVY") {
                 correctIndex = shuffleOrder ? 0 : 1;
             } else {
                 correctIndex = shuffleOrder ? 1 : 0;
             }
 
-            // Render details to elements
             document.getElementById('emoji-0').textContent = slot0.emoji;
             document.getElementById('text-0').textContent = slot0.name;
             document.getElementById('emoji-1').textContent = slot1.emoji;
             document.getElementById('text-1').textContent = slot1.name;
 
-            // Reset visual frame styles
             for (let i = 0; i < 2; i++) {
                 const card = document.getElementById(`card-${i}`);
                 card.style.opacity = "1";
@@ -269,31 +291,20 @@
 
         function selectCard(index) {
             if (!canClick) return;
-
             const selectedCard = document.getElementById(`card-${index}`);
-
             if (index === correctIndex) {
                 score++;
                 document.getElementById('score-text').textContent = score;
                 canClick = false;
-
-                // Color correct answer green instantly
                 selectedCard.style.backgroundColor = "#dcfce7";
                 selectedCard.style.borderColor = "var(--grass-green)";
                 selectedCard.style.boxShadow = "0 6px 0 #15803d";
                 selectedCard.style.transform = "scale(1.05)";
-
-                // Dim out wrong card
                 const otherIndex = index === 0 ? 1 : 0;
                 document.getElementById(`card-${otherIndex}`).style.opacity = "0.3";
-
-                if (score === farmMilestone) {
-                    setTimeout(showFarmAward, 500);
-                } else {
-                    setTimeout(generateRound, 900);
-                }
+                if (score === farmMilestone) setTimeout(showFarmAward, 500);
+                else setTimeout(generateRound, 900);
             } else {
-                // Paint incorrect card grey and disable it
                 selectedCard.style.opacity = "0.3";
                 selectedCard.style.backgroundColor = "#f1f5f9";
                 selectedCard.style.borderColor = "#94a3b8";
@@ -304,12 +315,10 @@
         function showFarmAward() {
             const prize = farmPrizes[Math.floor(Math.random() * farmPrizes.length)];
             document.getElementById('trophy-icon').textContent = prize;
-
             const shelf = document.getElementById('shelf-badges');
             const span = document.createElement('span');
             span.textContent = prize;
             shelf.appendChild(span);
-
             document.getElementById('farm-overlay').classList.add('show');
             farmMilestone += 10;
         }
@@ -320,22 +329,7 @@
             generateRound();
         }
 
-        // Boot up game!
         generateRound();
     </script>
-
-<center>
-<table>
-<tr>
-
-	<td>
-	 <center><a href="1.html"><img src="ACT.png" width="150" length="150"></a></center>
-	<br>
-	 <center><a href="arcade.html"><img src="np.png" width="150" length="150"></a></center>
-	</td>
-</tr>
-</table>
-</center>
-
 </body>
 </html>

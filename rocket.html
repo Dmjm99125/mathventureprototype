@@ -15,20 +15,23 @@
 
         body {
             margin: 0;
-            padding: 0;
+            padding: 20px; /* Added padding to protect phone edges */
             font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
             background-color: var(--space-dark);
             color: #ffffff;
             display: flex;
+            flex-direction: column; /* Forces vertical stacking */
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            gap: 25px; /* Adds space between game and buttons */
             user-select: none;
             -webkit-user-select: none;
+            box-sizing: border-box;
         }
 
         #galaxy-frame {
-            width: 95%;
+            width: 100%; /* Changed to 100% for safe mobile sizing */
             max-width: 460px;
             background: rgba(30, 41, 59, 0.8);
             border: 6px solid var(--neon-cyan);
@@ -164,6 +167,7 @@
             gap: 10px;
             font-size: 1.8rem;
             min-height: 35px;
+            flex-wrap: wrap;
         }
 
         #space-overlay {
@@ -177,6 +181,27 @@
             transition: opacity 0.4s ease;
         }
         #space-overlay.show { opacity: 1; pointer-events: auto; }
+
+        /* Modern layout for bottom navigation images */
+        .nav-buttons {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap; /* Allows safe stacking on narrow screens */
+            gap: 20px;
+        }
+
+        .nav-buttons img {
+            transition: transform 0.2s;
+            border-radius: 15px;
+        }
+
+        @media (hover: hover) {
+            .nav-buttons img:hover {
+                transform: scale(1.05);
+            }
+        }
     </style>
 </head>
 <body>
@@ -197,7 +222,6 @@
         <div id="rocket-screen">4 + 2</div>
         <p style="margin: 0; font-weight: bold; color: #94a3b8; font-size: 0.9rem;">Tap a star button to load fuel! Tap a star inside the tank to delete it.</p>
 
-        <!-- Clickable Star Dispensers -->
         <div class="sky-dispenser">
             <div class="star-source" onclick="addStar('left', '⭐')">
                 <div class="movable-star">⭐</div>
@@ -221,6 +245,11 @@
             <div style="font-size: 0.75rem; color: #64748b; font-weight: bold; text-transform: uppercase; margin-bottom: 3px;">Discovered Space Map</div>
             <div id="galaxy-badges"></div>
         </div>
+    </div>
+
+    <div class="nav-buttons">
+        <a href="4e.html"><img src="np.png" width="80" height="50" alt="Next Page"></a>
+        <a href="1.html"><img src="ACT.png" width="80" height="50" alt="Activity"></a>
     </div>
 
     <script>
@@ -320,18 +349,5 @@
 
         generateStarCoordinates();
     </script>
-
-<center>
-<table>
-<tr>
-	<td>
-	 <center><a href="4e.html"><img src="np.png" width="150" length="200"></a></center>
-	<br>
-	 <center><a href="1.html"><img src="ACT.png" width="150" length="150"></a></center>
-	</td>
-</tr>
-</table>
-</center>
-
 </body>
 </html>

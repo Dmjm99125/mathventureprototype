@@ -15,20 +15,23 @@
 
         body {
             margin: 0;
-            padding: 0;
+            padding: 20px; /* Added padding to protect phone edges */
             font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
             background: linear-gradient(180deg, #ffedd5 0%, #fed7aa 100%);
             color: var(--dark);
             display: flex;
+            flex-direction: column; /* Forces vertical stacking */
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            gap: 25px; /* Adds space between game and buttons */
+            box-sizing: border-box;
             user-select: none;
             -webkit-user-select: none;
         }
 
         #game-container {
-            width: 95%;
+            width: 100%; /* Changed to 100% for safe mobile sizing */
             max-width: 460px;
             background: #ffffff;
             border: 6px solid var(--chef-blue);
@@ -210,6 +213,27 @@
             box-shadow: 0 5px 0 #1d4ed8;
             font-family: inherit;
         }
+
+        /* Modern layout for bottom navigation images */
+        .nav-buttons {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap; /* Allows safe stacking on narrow screens */
+            gap: 20px;
+        }
+
+        .nav-buttons img {
+            transition: transform 0.2s;
+            border-radius: 15px;
+        }
+
+        @media (hover: hover) {
+            .nav-buttons img:hover {
+                transform: scale(1.05);
+            }
+        }
     </style>
 </head>
 <body>
@@ -224,7 +248,7 @@
 
         <div class="hud-row">
             <div>Pizzas: <span id="score-text" style="color: var(--chef-blue);">0</span></div>
-            <div>Next Star: <span id="target-text" style="color: var(--crust-gold);">10</span></div>
+            <div>Next Star: <span id="target-text" style="color: var(--pizza-crust);">10</span></div>
         </div>
 
         <div id="kitchen-stage">
@@ -248,6 +272,11 @@
             <div style="font-size: 0.75rem; color: #94a3b8; font-weight: bold; text-transform: uppercase; margin-bottom: 3px;">Your Golden Kitchen Collection</div>
             <div id="shelf-rewards"></div>
         </div>
+    </div>
+
+    <div class="nav-buttons">
+        <a href="rocket.html"><img src="np.png" width="80" height="50" alt="Next Page"></a>
+        <a href="1.html"><img src="ACT.png" width="80" height="50" alt="Activity"></a>
     </div>
 
     <script>
@@ -401,18 +430,5 @@
         // Initialize the kitchen!
         buildPizzaOrder();
     </script>
-
-<center>
-<table>
-<tr>
-	<td>
-	 <center><a href="rocket.html"><img src="np.png" width="150" length="200"></a></center>
-	<br>
-	 <center><a href="1.html"><img src="ACT.png" width="150" length="150"></a></center>
-	</td>
-</tr>
-</table>
-</center>
-
 </body>
 </html>
